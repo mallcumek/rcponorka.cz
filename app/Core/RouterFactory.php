@@ -19,7 +19,7 @@ final class RouterFactory
 	{
 		$router = new RouteList;
 		// Default route that maps to the Dashboard
-		$router->addRoute('<presenter>/<action>', 'Dashboard:default');
+		$router->addRoute('<presenter>/<action>', 'Home:default');
 		return $router;
 	}
 }

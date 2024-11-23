@@ -1,0 +1,16 @@
+{block content}
+<h1>Ponorka home</h1>
+
+
+    <h2>Kalendář akcí</h2>
+
+    {foreach $posts as $post}
+        <div class="post">
+            <div class="date">{$post->created_at|date:'F j, Y'}</div>
+
+            <h2>{$post->title}</h2>
+
+            <div>{$post->content|truncate:256}</div>
+        </div>
+    {/foreach}
+{/block}

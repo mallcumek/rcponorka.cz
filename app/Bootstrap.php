@@ -42,7 +42,7 @@ class Bootstrap
 	{
 		// Nette is smart, and the development mode turns on automatically,
 		// or you can enable for a specific IP address it by uncommenting the following line:
-		// $this->configurator->setDebugMode('secret@23.75.345.200');
+		 $this->configurator->setDebugMode('178.255.168.63');
 
 		// Enables Tracy: the ultimate "swiss army knife" debugging tool.
 		// Learn more about Tracy at https://tracy.nette.org
