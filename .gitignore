@@ -4,3 +4,5 @@ config
 temp
 .idea
 log
+/www/asssets/vendor/
+/www/assets/img/
