@@ -10,13 +10,13 @@
     <meta content="Rockový klub, bar, hospoda - Ponorka Pardubice." name="description">
     <meta content="rock, club, ponorka, pub" name="keywords">
     <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="{$basePath}/assets/img/favicon.png" rel="icon">
+    <link href="{$basePath}/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
     <!-- Vendor CSS Files -->
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="{$basePath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{$basePath}/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <!-- Template Main CSS File -->
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="{$basePath}/assets/css/style.css" rel="stylesheet">
 </head>
 {* Page title with optional prefix from the child template *}
 
@@ -66,7 +66,8 @@
 
 
                 <div n:foreach="$flashes as $flash" n:class="alert, 'alert-' . $flash->type">{$flash->message}</div>
-
+		{* Main content of the child template goes here *}
+		{include content}
             </div>
 
             <div class="tab-content row justify-content-center">
@@ -81,7 +82,7 @@
                         </div>
                         <div class="col-md-10 d-flex">
                             <div class="speaker  border border-warning ">
-                                <img loading="lazy" src="assets/img/speakers/turekflayer.jpg" alt="Tomáš Turek">
+                                <img loading="lazy" src="{$basePath}/assets/img/speakers/turekflayer.jpg" alt="Tomáš Turek">
                             </div>
                             <div class="text">
                                 <h4>Tomáš Turek Tour 2024</h4>
@@ -94,9 +95,6 @@
                             </div>
                         </div>
                     </div>
-
-                    {* Main content of the child template goes here *}
-		{include content}
 
 
                 </div>
@@ -211,12 +209,12 @@
 
     <!-- Vendor JS Files -->
     <!-- <script src="assets/vendor/aos/aos.js"></script> -->
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+    <script src="{$basePath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js" defer></script>
     <!-- <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
     Zakomentován lightbox inicializace v main.js, odpojeno css i js = text webu se zobrazuje
         -->
     <!-- Template Main JS File -->
-    <script src="assets/js/main.js"></script>
+    <script src="{$basePath}/assets/js/main.js"></script>
     <script src="https://unpkg.com/nette-forms@3/src/assets/netteForms.js"></script>
 
 {/block}
