@@ -1,9 +1,141 @@
 {block content}
-    {* Atribut n:foreach obaluje div blokem foreach *}
-    <div n:foreach="$posts as $post" class="post">
-        <div class="date">{$post->created_at|date:'F j, Y'}</div>
-        {* Značka {link} generuje URL adresu, která směřuje na akci Post:show. Také předává ID příspěvku jako argument. *}
-        <h2><a href="{link Post:show $post->id}">{$post->title}</a></h2>
-        <div>{$post->content|truncate:256}</div>
-    </div>
+    <!-- ======= Hero Section ======= -->
+    <section id="hero">
+        <div class="hero-container">
+            <h1 class="mb-4 pb-0">Rock Club<br><span>Ponorka</span></h1>
+            <a href="#schedule" class="about-btn scrollto">Program</a>
+            <a href="#contact" class="about-btn scrollto">Kontakt</a>
+        </div>
+    </section><!-- End Hero Section -->
+
+    <main id="main">
+        <!-- ======= Schedule Section ======= -->
+        <section id="schedule" class="section-with-bg">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Program</h2>
+                    <p>Kalendář akcí v rockovém klubu Ponorka, Pardubice.</p>
+                </div>
+
+
+
+                <div class="tab-content row justify-content-center">
+
+
+                    <div  class="col-lg-9 tab-pane fade show active">
+
+                        {* Atribut n:foreach obaluje div blokem foreach *}
+                        <div n:foreach="$posts as $post" class="post">
+                            <div class="date">{$post->created_at|date:'F j, Y'}</div>
+                            {* Značka {link} generuje URL adresu, která směřuje na akci Post:show. Také předává ID příspěvku jako argument. *}
+                            <h2><a href="{link Post:show $post->id}#schedule">{$post->title}</a></h2>
+                            <div>{$post->content|truncate:256}</div>
+                        </div>
+
+                        <div class="row schedule-item">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <time>So <strong>15.</strong> červen 2024</time>
+                            </div>
+                            <div class="col-md-10 d-flex">
+                                <div class="speaker  border border-warning ">
+                                    <img loading="lazy" src="{$basePath}/assets/img/speakers/turekflayer.jpg" alt="Tomáš Turek">
+                                </div>
+                                <div class="text">
+                                    <h4>Tomáš Turek Tour 2024</h4>
+                                    <p>Otevřeno: <strong>19:00</strong> <br> Začátek: <strong>20:00</strong>.</p>
+                                    <p>Předprodej: <strong>100 Kč</strong>
+                                        <a href="#about">
+                                            <button type="button" class="btn btn-sm btn-warning">Vstupenky</button>
+                                        </a> <br> Na místě: <strong>250 Kč</strong>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!-- End Schdule Day 1 -->
+
+
+                </div>
+
+            </div>
+
+        </section><!-- End Schedule Section -->
+
+
+        <!-- ======= Contact Section ======= -->
+        <section id="contact" class="section-bg">
+
+            <div class="container">
+
+                <div class="section-header">
+                    <h2>Kontakt</h2>
+                    <p>Máte-li dotaz, pište, volejte, těšíme se na vás.</p>
+                </div>
+
+                <div class="row contact-info">
+
+
+                    <div class="col-md-4">
+                        <div class="contact-address">
+                            <i class="bi bi-geo-alt"></i>
+                            <h3>Club Ponorka</h3>
+                            <address>Jiráskova 29, 530 02 Pardubice I</address>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="contact-phone">
+                            <i class="bi bi-phone"></i>
+                            <h3>Telefon</h3>
+                            <p><a href="tel:+155895548855">+402 608 606 606</a></p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="contact-email">
+                            <i class="bi bi-envelope"></i>
+                            <h3>Email</h3>
+                            <p><a href="mailto:info@example.com">info@rcponorka.cz</a></p>
+                        </div>
+                    </div>
+
+                </div>
+                <h3>Napište nám zprávu</h3>
+                <div class="form">
+                    <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <input type="text" name="name" class="form-control" id="name" placeholder="Jméno" required>
+                            </div>
+                            <div class="form-group col-md-6 mt-3 mt-md-0">
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Email"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Předmět"
+                                   required>
+                        </div>
+                        <div class="form-group mt-3">
+                            <textarea class="form-control" name="message" rows="5" placeholder="Zpráva" required></textarea>
+                        </div>
+                        <div class="my-3">
+                            <div class="loading">Loading</div>
+                            <div class="error-message"></div>
+                            <div class="sent-message">Your message has been sent. Thank you!</div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit">Odeslat zprávu</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </section><!-- End Contact Section -->
+
+    </main><!-- End #main -->
+
+
 {/block}
