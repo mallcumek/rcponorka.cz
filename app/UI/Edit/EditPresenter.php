@@ -27,17 +27,46 @@ final class EditPresenter extends Nette\Application\UI\Presenter
         return $form;
     }
 
-    // Tato metoda získá data z formuláře, vloží je do databáze, vytvoří zprávu pro uživatele o úspěšném uložení příspěvku a
+    // Tato metoda získá data z formuláře, vloží nebo je upraví do databáze, vytvoří zprávu pro uživatele o úspěšném uložení příspěvku a
     // přesměruje na stránku s novým příspěvkem, takže hned uvidíme, jak vypadá.
     private function postFormSucceeded(array $data): void
     {
-        $post = $this->database
-            ->table('posts')
-            ->insert($data);
+        // Kde se však onen parametr id vezme? Jedná se o parametr, který byl vložen do metody renderEdit.
+        $id = $this->getParameter('id');
 
-        $this->flashMessage("Příspěvek byl úspěšně publikován.", 'success');
+        // Pokud je k dispozici parametr id, znamená to, že budeme upravovat příspěvek
+        if ($id) {
+            $post = $this->database
+                ->table('posts')
+                ->get($id);
+            $post->update($data);
+        //  Pokud parametr id není k dispozici, pak to znamená, že by měl být nový příspěvek přidán.
+        } else {
+            $post = $this->database
+                ->table('posts')
+                ->insert($data);
+        }
+
+        $this->flashMessage('Příspěvek byl úspěšně publikován.', 'success');
         $this->redirect('Post:show', $post->id);
     }
+
+
+    // Přidáme novou stránku edit do presenteru EditPresenter
+    public function renderEdit(int $id): void
+    {
+        $post = $this->database
+            ->table('posts')
+            ->get($id);
+
+        if (!$post) {
+            $this->error('Post not found');
+        }
+
+        $this->getComponent('postForm')
+            ->setDefaults($post->toArray());
+    }
+
 
 
 }

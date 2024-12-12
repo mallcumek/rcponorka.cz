@@ -8,7 +8,8 @@
         <div class="tab-content row justify-content-center">
             <div  class="col-lg-9 tab-pane fade show active bg-black">
 
-                <p><a n:href="Home:default">← zpět na výpis příspěvků</a></p>
+                <p><a n:href="Home:default#schedule">← zpět na výpis příspěvků</a></p>
+                <p><a n:href="Edit:edit $post->id">Upravit příspěvek</a></p>
                 <div class="date">{$post->created_at|date:'F j, Y'}</div>
                 <h1 n:block="title">{$post->title}</h1>
                 <div class="post">{$post->content}</div>
