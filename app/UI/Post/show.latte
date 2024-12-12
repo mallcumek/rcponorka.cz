@@ -3,42 +3,22 @@
 {* Protože používáme atribut n:href, tak se Nette samo postará o generování odkazů. *}
 {block content}
 <!-- ======= Hero Section ======= -->
-<section id="hero">
+<section id="hero" class="bg-dark">
     <div class="hero-container">
-        <h1 class="mb-4 pb-0">Rock Club<br><span>Ponorka</span></h1>
-        <a href="#schedule" class="about-btn scrollto">Program</a>
-        <a href="#contact" class="about-btn scrollto">Kontakt</a>
+        <div class="tab-content row justify-content-center">
+            <div  class="col-lg-9 tab-pane fade show active bg-black">
+
+                <p><a n:href="Home:default">← zpět na výpis příspěvků</a></p>
+                <div class="date">{$post->created_at|date:'F j, Y'}</div>
+                <h1 n:block="title">{$post->title}</h1>
+                <div class="post">{$post->content}</div>
+
+
+            </div>
     </div>
 </section><!-- End Hero Section -->
 <main id="main">
-    <!-- ======= Schedule Section ======= -->
-    <section id="schedule" class="section-with-bg">
-        <div class="container">
 
-            <div class="tab-content row justify-content-center">
-                <div  class="col-lg-9 tab-pane fade show active">
-
-                    <p><a n:href="Home:default">← zpět na výpis příspěvků</a></p>
-                    <div class="date">{$post->created_at|date:'F j, Y'}</div>
-                    <h1 n:block="title">{$post->title}</h1>
-                    <div class="post">{$post->content}</div>
-
-
-                </div>
-                <!-- End Schdule Day 1 -->
-            </div>
-        </div>
-    </section><!-- End Schedule Section -->
-
-    <!-- ======= Contact Section ======= -->
-    <section id="contact" class="section-bg">
-
-        <div class="container">
-
-
-
-        </div>
-    </section><!-- End Contact Section -->
 
 </main><!-- End #main -->
 
