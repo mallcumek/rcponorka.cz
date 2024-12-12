@@ -2,6 +2,7 @@
 
 services:
 	- App\Core\RouterFactory::createRouter
+	- App\Model\PostFacade
 
 
 search:
