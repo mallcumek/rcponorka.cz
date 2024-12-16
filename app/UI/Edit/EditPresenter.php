@@ -16,10 +16,22 @@ final class EditPresenter extends Nette\Application\UI\Presenter
     protected function createComponentPostForm(): Form
     {
         $form = new Form;
-        $form->addText('title', 'Titulek:')
+        $form->addText('title', 'Název událostí:')
             ->setRequired();
-        $form->addTextArea('content', 'Obsah:')
+        $form->addDate('eventdate', 'Datum konání:')
             ->setRequired();
+        $form->addText('opentime', 'Otevřeno od:')
+            ->setRequired();
+        $form->addText('starttime', 'Začátek akce:')
+            ->setRequired();
+        $form->addInteger('onsiteprice', 'Cena na místě v CZK:')
+            ->setRequired();
+        $form->addInteger('presaleprice', 'Cena předprodeje v CZK:')
+            ;
+        $form->addText('tickets', 'Odkaz na vstupenky:')
+            ;
+        $form->addTextArea('content', 'Poznámky k události:')
+            ;
 
         $form->addSubmit('send', 'Uložit a publikovat');
         $form->onSuccess[] = $this->postFormSucceeded(...);
