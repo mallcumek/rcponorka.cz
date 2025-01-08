@@ -15,7 +15,9 @@
                 <div class="section-header">
                     <h2>Program</h2>
                     <p>Kalendář akcí v rockovém klubu Ponorka, Pardubice.</p>
+                    {if $user->isLoggedIn()}
                     <a n:href="Edit:create">Napsat nový příspěvek</a>
+                    {/if}
                 </div>
 
 

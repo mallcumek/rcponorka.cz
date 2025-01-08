@@ -19,6 +19,8 @@ final class HomePresenter extends Nette\Application\UI\Presenter
     {
     }
 
+
+
     // Nyní načteme příspěvky z databáze a pošleme je do šablony, která je následně vykreslí jako HTML kód.
     // V šabloně nyní bude k dispozici proměnná $posts, ve které jsou příspěvky získané z databáze.
     public function renderDefault(): void

@@ -10,3 +10,5 @@ search:
 		classes:
 			- *Factory
 			- *Facade
+session:
+    autoStart: true

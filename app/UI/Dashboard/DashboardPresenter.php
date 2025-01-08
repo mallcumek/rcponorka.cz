@@ -16,4 +16,6 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
 {
 	// Incorporates methods to check user login status
 	use RequireLoggedUser;
+
+
 }
