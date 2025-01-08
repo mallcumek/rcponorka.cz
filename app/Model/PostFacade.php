@@ -18,4 +18,5 @@ final class PostFacade
             ->where('created_at < ', new \DateTime)
             ->order('created_at DESC');
     }
+
 }

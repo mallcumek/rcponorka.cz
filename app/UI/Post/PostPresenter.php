@@ -23,4 +23,23 @@ final class PostPresenter extends Nette\Application\UI\Presenter
         $this->template->post = $post;
     }
 
+    protected function createTemplate(?string $class = null): \Nette\Application\UI\Template
+    {
+        /** @var \Nette\Application\UI\Template $template */
+        $template = parent::createTemplate($class);
+
+        // Přidání filtru pro formátování data
+        $template->addFilter('czDate', function ($date) {
+            $formatter = new \IntlDateFormatter(
+                'cs_CZ',                       // Lokalizace: Čeština
+                \IntlDateFormatter::FULL,      // Styl data (dlouhý)
+                \IntlDateFormatter::NONE       // Bez času
+            );
+            $formatter->setPattern('EEEE d. MMMM yyyy'); // Formát: Pá 17. květen 2024
+            return $formatter->format(new \DateTime($date)); // Načtení datumu
+        });
+
+        return $template;
+    }
+
 }

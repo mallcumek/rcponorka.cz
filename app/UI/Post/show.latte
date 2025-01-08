@@ -6,16 +6,25 @@
 <section id="hero" class="bg-dark">
     <div class="hero-container">
         <div class="tab-content row justify-content-center">
+            <p><a n:href="Home:default#schedule">← zpět na program</a> - <a n:href="Edit:edit $post->id" class="link-danger">upravit</a></p>
             <div  class="col-lg-9 tab-pane fade show active bg-black text-white">
-
-                <p><a n:href="Home:default#schedule">← zpět na výpis příspěvků</a></p>
-                <p><a n:href="Edit:edit $post->id">Upravit příspěvek</a></p>
-                <div class="date">{$post->created_at|date:'F j, Y'}</div>
+                <div class="date pt-3">{$post->eventdate|czDate}</div>
                 <h1 n:block="title">{$post->title}</h1>
-                <div class="post">{$post->content}</div>
-
-
+                <div class="text p-0 m-0">
+                    <p>Otevřeno: <strong>{$post->opentime}</strong><br> Začátek: <strong>{$post->starttime}</strong><br>
+                        Předprodej: <strong>{$post->presaleprice}</strong> CZK<br>
+                         Na místě: <strong>{$post->onsiteprice}</strong> CZK<br>
+                        <a href="#">
+                            <button type="button" class="btn btn-sm btn-warning">Vstupenky</button>
+                        </a>
+                    </p>
+                </div>
+                <div class="post pb-3">{$post->content}</div>
+                <div class=" pb-5 ">
+                    <img loading="lazy" src="{$basePath}/assets/img/speakers/turekflayer.jpg" width="300" alt="Tomáš Turek">
+                </div>
             </div>
+        </div>
     </div>
 </section><!-- End Hero Section -->
 <main id="main">
