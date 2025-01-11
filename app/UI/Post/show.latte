@@ -1,34 +1,47 @@
+{block head}
+    <link href="{$basePath}/assets/css/grid.css" rel="stylesheet">
+{/block}
+
 {* Definice bloku s názvem „content“ stejně jako tomu bylo na úvodní stránce. *}
 {* Tento blok bude opět zobrazen v hlavní šabloně. Jak vidíte, chybí koncová značka {/block}. Ta je totiž nepovinná. *}
 {* Protože používáme atribut n:href, tak se Nette samo postará o generování odkazů. *}
 {block content}
-<!-- ======= Hero Section ======= -->
-<section id="hero" class="bg-dark">
-    <div class="hero-container">
-        <div class="tab-content row justify-content-center">
-            <p><a n:href="Home:default#schedule">← zpět na program</a> - <a n:href="Edit:edit $post->id" class="link-danger">upravit</a></p>
-            <div  class="col-lg-9 tab-pane fade show active bg-black text-white">
-                <div class="date pt-3">{$post->eventdate|czDate}</div>
-                <h1 n:block="title">{$post->title}</h1>
-                <div class="text p-0 m-0">
-                    <p>Otevřeno: <strong>{$post->opentime}</strong><br> Začátek: <strong>{$post->starttime}</strong><br>
-                        Předprodej: <strong>{$post->presaleprice}</strong> CZK<br>
-                         Na místě: <strong>{$post->onsiteprice}</strong> CZK<br>
-                        <a href="#">
-                            <button type="button" class="btn btn-sm btn-warning">Vstupenky</button>
-                        </a>
-                    </p>
-                </div>
-                <div class="post pb-3">{$post->content}</div>
-                <div class=" pb-5 ">
-                    <img loading="lazy" src="{$basePath}/assets/img/speakers/turekflayer.jpg" width="300" alt="Tomáš Turek">
+<main id="main" class="">
+    <section id="gallery" class="">
+
+        <div class="container py-5 ">
+            <div class="section-header ">
+                <p class="text-start pb-3"><a n:href="Home:default#schedule">← zpět na program</a>
+                    {if $user->isLoggedIn()}
+                        - <a n:href="Edit:edit $post->id" class="link-danger">upravit</a>
+                    {/if}
+                </p>
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 detail-udalosti-col">
+                        <div class="date text-center pt-2 ">{$post->eventdate|czDate}</div>
+                        <h1 class="p-0 m-0 text-white text-center text-uppercase fw-bold " n:block="title">{$post->title}</h1>
+                        <div class="p-3 m-0 text-center ">
+                            <p class="text-white">Otevřeno: <strong>{$post->opentime}</strong><br> Začátek:
+                                <strong>{$post->starttime}</strong><br>
+                                Předprodej: <strong>{$post->presaleprice}</strong> CZK<br>
+                                Na místě: <strong>{$post->onsiteprice}</strong> CZK<br>
+                                <a href="#">
+                                    <button type="button" class="btn btn-sm btn-warning">Vstupenky</button>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="post pb-3 text-center">{$post->content}</div>
+                        <div class=" pb-5 text-center ">
+                            <img loading="lazy" src="{$basePath}/assets/img/speakers/turekflayer.jpg" width="300"
+                                 alt="Tomáš Turek">
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="wrapper">
+            </div>
         </div>
-    </div>
-</section><!-- End Hero Section -->
-<main id="main">
 
-
-</main><!-- End #main -->
+    </section>
+</main>
 
