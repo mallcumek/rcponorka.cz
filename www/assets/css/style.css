@@ -715,6 +715,24 @@ h6 {
   font-weight: normal;
   font-size: 16px;
 }
+#schedule .schedule-item h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+#schedule .schedule-item a{
+  color:#19328e;
+}
+#schedule .schedule-item a:hover{
+  color:darkorange;
+}
+
+#schedule .schedule-item h3 span {
+  font-style: italic;
+  color: #19328e;
+  font-weight: normal;
+  font-size: 16px;
+}
 
 #schedule .schedule-item p {
   font-style: italic;

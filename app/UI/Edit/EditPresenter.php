@@ -3,6 +3,7 @@ namespace App\UI\Edit;
 
 use Nette;
 use Nette\Application\UI\Form;
+use Nette\Utils\Strings;
 
 final class EditPresenter extends Nette\Application\UI\Presenter
 {
@@ -32,7 +33,8 @@ final class EditPresenter extends Nette\Application\UI\Presenter
             ;
         $form->addTextArea('content', 'Poznámky k události:')
             ;
-
+        // Přidáváme pole pro nahrávání souborů
+        $form->addUpload('image', 'Obrázek:');
         $form->addSubmit('send', 'Uložit a publikovat');
         $form->onSuccess[] = $this->postFormSucceeded(...);
 
@@ -48,12 +50,39 @@ final class EditPresenter extends Nette\Application\UI\Presenter
 
         // Pokud je k dispozici parametr id, znamená to, že budeme upravovat příspěvek
         if ($id) {
+
+            // Získání původního názvu souboru
+            $file = $data['image'];
+            $originalName = $file->getSanitizedName();
+            // Odstranění staré přípony (např. .jpeg)
+            $imageNameWithoutExtension = pathinfo($originalName, PATHINFO_FILENAME);
+            // Udelame novy nazev s webp pro ulozeni do mysql, protoze menime format
+            $newImageNameWebp = $imageNameWithoutExtension . ".webp";
+            $newImageNameWebp = strtolower($newImageNameWebp);
+            $data['image'] = $newImageNameWebp;
+
             $post = $this->database
                 ->table('posts')
                 ->get($id);
             $post->update($data);
         //  Pokud parametr id není k dispozici, pak to znamená, že by měl být nový příspěvek přidán.
         } else {
+
+            // Získání původního názvu souboru
+            $file = $data['image'];
+            $originalName = $file->getSanitizedName();
+            // Odstranění staré přípony (např. .jpeg)
+            $imageNameWithoutExtension = pathinfo($originalName, PATHINFO_FILENAME);
+            //udelame novy nazev s webp pro ulozeni do mysql, protoze u resizu menime formát obrázku
+            $newImageNameWebp = $imageNameWithoutExtension . ".webp";
+            $newImageNameWebp = strtolower($newImageNameWebp);
+            $originalNameStrtoLower = strtolower($originalName);
+            // Ulož název souboru obrázku do pole
+            $data['image'] = $newImageNameWebp;
+            //Titulek projede funkci webalize na seo titulek - vynecha znaky, diakritiku, male pismo, mezery na pomlcky. blabla
+            $title_slug = Strings::webalize($data['title']);
+            $data['title_slug'] = $title_slug;
+
             $post = $this->database
                 ->table('posts')
                 ->insert($data);

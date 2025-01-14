@@ -27,12 +27,27 @@
 
                     <div  class="col-lg-9 tab-pane fade show active">
 
-                        {* Atribut n:foreach obaluje div blokem foreach *}
-                        <div n:foreach="$posts as $post" class="post">
-                            <div class="date">{$post->created_at|date:'F j, Y'}</div>
-                            {* Značka {link} generuje URL adresu, která směřuje na akci Post:show. Také předává ID příspěvku jako argument. *}
-                            <h2><a href="{link Post:show $post->id}#schedule">{$post->title}</a></h2>
-                            <div>{$post->content|truncate:256}</div>
+                        {* Atribut n:foreach obaluje div blokem foreach
+                           Začátek cyklu na výpis události *}
+                        <div n:foreach="$posts as $post" class="row schedule-item">
+
+                            <div class="col-md-2 d-flex align-items-center">
+                                <time>{$post->created_at|date:'F j, Y'}</time>
+                            </div>
+                            <div class="col-md-10 d-flex">
+                                <div class="speaker  border border-warning ">
+                                    <img loading="lazy" src="{$basePath}/assets/img/speakers/turekflayer.jpg" alt="Tomáš Turek">
+                                </div>
+                                <div class="text">
+                                    <h3><a href="{link Post:show $post->id}#schedule">{$post->title}</a></h3>
+                                    <p>Otevřeno: <strong>{$post->opentime}</strong> <br> Začátek: <strong>{$post->starttime}</strong>.</p>
+                                    <p>Předprodej: <strong>{$post->presaleprice} Kč</strong>
+                                        <a href="#about"></a> <br> Na místě: <strong>{$post->onsiteprice} Kč</strong>
+                                        <br><button type="button" class="btn btn-sm btn-warning">Vstupenky</button>
+                                    </p>
+                                    <p class="text-dark">{$post->content|truncate:256}</p>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="row schedule-item">
@@ -51,6 +66,7 @@
                                             <button type="button" class="btn btn-sm btn-warning">Vstupenky</button>
                                         </a> <br> Na místě: <strong>250 Kč</strong>
                                     </p>
+
                                 </div>
                             </div>
                         </div>
