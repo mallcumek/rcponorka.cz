@@ -9,7 +9,7 @@ use Nette\Utils\Strings;
 use Nette\Utils\Image;
 use App\UI\Accessory\RequireLoggedUser;
 use Contributte\ImageStorage\ImageStoragePresenterTrait;
-use function App\Module\Admin\Presenters\clearDir;
+
 
 final class EditPresenter extends Nette\Application\UI\Presenter
 {
