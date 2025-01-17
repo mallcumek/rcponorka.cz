@@ -1,16 +1,22 @@
 <?php
+
 namespace App\UI\Edit;
 
 use Nette;
 use Nette\Application\UI\Form;
 use Nette\Utils\Strings;
+use App\UI\Accessory\RequireLoggedUser;
 
 final class EditPresenter extends Nette\Application\UI\Presenter
 {
+    // Incorporates methods to check user login status
+    use RequireLoggedUser;
+
     // Mysql login
     public function __construct(
         private Nette\Database\Explorer $database,
-    ) {
+    )
+    {
     }
 
     // Továrna na formulář pro Post události
@@ -27,12 +33,9 @@ final class EditPresenter extends Nette\Application\UI\Presenter
             ->setRequired();
         $form->addInteger('onsiteprice', 'Cena na místě v CZK:')
             ->setRequired();
-        $form->addInteger('presaleprice', 'Cena předprodeje v CZK:')
-            ;
-        $form->addText('tickets', 'Odkaz na vstupenky:')
-            ;
-        $form->addTextArea('content', 'Poznámky k události:')
-            ;
+        $form->addInteger('presaleprice', 'Cena předprodeje v CZK:');
+        $form->addText('tickets', 'Odkaz na vstupenky:');
+        $form->addTextArea('content', 'Poznámky k události:');
         // Přidáváme pole pro nahrávání souborů
         $form->addUpload('image', 'Obrázek:');
         $form->addSubmit('send', 'Uložit a publikovat');
@@ -65,7 +68,7 @@ final class EditPresenter extends Nette\Application\UI\Presenter
                 ->table('posts')
                 ->get($id);
             $post->update($data);
-        //  Pokud parametr id není k dispozici, pak to znamená, že by měl být nový příspěvek přidán.
+            //  Pokud parametr id není k dispozici, pak to znamená, že by měl být nový příspěvek přidán.
         } else {
 
             // Získání původního názvu souboru
@@ -107,7 +110,6 @@ final class EditPresenter extends Nette\Application\UI\Presenter
         $this->getComponent('postForm')
             ->setDefaults($post->toArray());
     }
-
 
 
 }
