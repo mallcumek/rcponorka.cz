@@ -36,7 +36,7 @@
                             </div>
                             <div class="col-md-10 d-flex">
                                 <div class="speaker  border border-warning ">
-                                    <img loading="lazy" src="{$basePath}/assets/img/speakers/turekflayer.jpg" alt="Tomáš Turek">
+                                    <img loading="lazy" src="{if $post->image}/data/{$post->id}/{$post->image}{else}/https://placehold.co/300x300?text=You can change the image.{/if}" alt="Tomáš Turek">
                                 </div>
                                 <div class="text">
                                     <h3><a href="{link Post:show $post->id}#schedule">{$post->title}</a></h3>
@@ -49,28 +49,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="row schedule-item">
-                            <div class="col-md-2 d-flex align-items-center">
-                                <time>So <strong>15.</strong> červen 2024</time>
-                            </div>
-                            <div class="col-md-10 d-flex">
-                                <div class="speaker  border border-warning ">
-                                    <img loading="lazy" src="{$basePath}/assets/img/speakers/turekflayer.jpg" alt="Tomáš Turek">
-                                </div>
-                                <div class="text">
-                                    <h4>Tomáš Turek Tour 2024</h4>
-                                    <p>Otevřeno: <strong>19:00</strong> <br> Začátek: <strong>20:00</strong>.</p>
-                                    <p>Předprodej: <strong>100 Kč</strong>
-                                        <a href="#about">
-                                            <button type="button" class="btn btn-sm btn-warning">Vstupenky</button>
-                                        </a> <br> Na místě: <strong>250 Kč</strong>
-                                    </p>
-
-                                </div>
-                            </div>
-                        </div>
-
 
                     </div> <!-- End Schdule Day 1 col -->
 

@@ -32,7 +32,7 @@
                         </div>
                         <div class="post pb-3 text-center">{$post->content}</div>
                         <div class=" pb-5 text-center ">
-                            <img loading="lazy" src="{$basePath}/assets/img/speakers/turekflayer.jpg" width="300"
+                            <img loading="lazy" src="{if $post->image}/data/{$post->id}/{$post->image}{else}/https://placehold.co/300x300?text=You can change the image.{/if}" width="300"
                                  alt="Tomáš Turek">
                         </div>
                     </div>

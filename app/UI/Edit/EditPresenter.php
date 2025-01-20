@@ -167,7 +167,7 @@ final class EditPresenter extends Nette\Application\UI\Presenter
             mkdir($postDir, 0777, true);
 
         } else {
-            //$this->clearDir($postDir);
+            $this->clearDir($postDir);
         }
 
         // Získání původního názvu souboru
@@ -316,16 +316,28 @@ final class EditPresenter extends Nette\Application\UI\Presenter
     // Přidáme novou stránku edit do presenteru EditPresenter
     public function renderEdit(int $id): void
     {
+        // GPT komentáře
+
+        // 1. Načteme záznam z databáze podle ID.
+        // Metoda `table('posts')` vybírá tabulku `posts` a `get($id)` vrací konkrétní řádek podle hodnoty primárního klíče (v tomto případě $id).
         $post = $this->database
             ->table('posts')
             ->get($id);
 
+        // 2. Pokud záznam neexistuje (například špatné nebo neplatné ID), zobrazíme chybu 404.
+        // Metoda `$this->error('...')` ukončí běh kódu a zobrazí stránku s chybovou zprávou.
         if (!$post) {
             $this->error('Post not found');
         }
 
+        // 3. Nastavíme výchozí hodnoty formuláře podle dat příspěvku z databáze.
+        // Komponenta `postForm` je formulář, který má metodu `setDefaults(array $values)`.
+        // `toArray()` převede objekt `$post` na asociativní pole, aby ho formulář pochopil.
         $this->getComponent('postForm')
             ->setDefaults($post->toArray());
+
+        // Přidáme pole $post do šablony
+        $this->template->post = $post;
     }
 
 
