@@ -1,10 +1,40 @@
+{block head}
+    <link href="{$basePath}/assets/css/grid.css" rel="stylesheet">
+{/block}
+
 {block content}
-<h1>Upravit příspěvek</h1>
+<main id="main" class="">
+    <section id="gallery" class="">
 
-{control postForm}
-<h2>Náhled obrázku</h2>
+        <div class="container py-5 ">
+            <div class="section-header ">
+                <p class="text-start pb-3"><a n:href="Home:default#schedule">← zpět na program</a>
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 bg-light text-dark">
 
-<img id="image-preview" src="{if $post->image}/data/{$post->id}/{$post->image}{else}/https://placehold.co/300x300?text=You can change the image.{/if}" height="300" alt="Image preview" />
+
+                        <h1 class="text-center pt-3">Upravit událost</h1>
+
+                        {control postForm}
+
+                        <div class="d-flex justify-content-center p-3 ">
+
+                                <img id="image-preview"
+                                     class="border border-dark"
+
+                                 src="{if $post->image}/data/{$post->id}/{$post->image}{else}/https://placehold.co/300x300?text=You can change the image.{/if}"
+                                 height="300" alt="Image preview" />
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
 <script type="text/javascript">
 
     // Preview an image before it is uploaded

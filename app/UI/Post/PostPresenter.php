@@ -3,11 +3,12 @@ namespace App\UI\Post;
 
 use Nette;
 use Nette\Application\UI\Form;
+use App\Model\PostFacade;
 
 final class PostPresenter extends Nette\Application\UI\Presenter
 {
     public function __construct(
-        private Nette\Database\Explorer $database,
+        private Nette\Database\Explorer $database, private PostFacade $facade
     ) {
     }
 
@@ -21,25 +22,13 @@ final class PostPresenter extends Nette\Application\UI\Presenter
             $this->error('Stránka nebyla nalezena');
         }
         $this->template->post = $post;
+
+        // Použití formátování datumu z fasády
+        // Vytvořená samostatná proměnna, i když by to šlo přidat do $post
+        $formattedDate = $this->facade->formatDate($post->created_at);
+        $this->template->formattedDate = $formattedDate;
     }
 
-    protected function createTemplate(?string $class = null): \Nette\Application\UI\Template
-    {
-        /** @var \Nette\Application\UI\Template $template */
-        $template = parent::createTemplate($class);
 
-        // Přidání filtru pro formátování data
-        $template->addFilter('czDate', function ($date) {
-            $formatter = new \IntlDateFormatter(
-                'cs_CZ',                       // Lokalizace: Čeština
-                \IntlDateFormatter::FULL,      // Styl data (dlouhý)
-                \IntlDateFormatter::NONE       // Bez času
-            );
-            $formatter->setPattern('EEEE d. MMMM yyyy'); // Formát: Pá 17. květen 2024
-            return $formatter->format(new \DateTime($date)); // Načtení datumu
-        });
-
-        return $template;
-    }
 
 }

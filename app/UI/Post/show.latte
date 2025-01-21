@@ -17,11 +17,11 @@
                     {/if}
                 </p>
                 <div class="row justify-content-center">
-                    <div class="col-lg-6 detail-udalosti-col">
-                        <div class="date text-center pt-2 ">{$post->eventdate|czDate}</div>
-                        <h1 class="p-0 m-0 text-white text-center text-uppercase fw-bold " n:block="title">{$post->title}</h1>
+                    <div class="col-lg-6 bg-light text-dark">
+                        <div class="date text-center pt-2 ">{$formattedDate}</div>
+                        <h1 class="p-0 m-0  text-center text-uppercase fw-bold " n:block="title">{$post->title}</h1>
                         <div class="p-3 m-0 text-center ">
-                            <p class="text-white">Otevřeno: <strong>{$post->opentime}</strong><br> Začátek:
+                            <p class="text-dark">Otevřeno: <strong>{$post->opentime}</strong><br> Začátek:
                                 <strong>{$post->starttime}</strong><br>
                                 Předprodej: <strong>{$post->presaleprice}</strong> CZK<br>
                                 Na místě: <strong>{$post->onsiteprice}</strong> CZK<br>
@@ -33,7 +33,8 @@
                         <div class="post pb-3 text-center">{$post->content}</div>
                         <div class=" pb-5 text-center ">
                             <img loading="lazy" src="{if $post->image}/data/{$post->id}/{$post->image}{else}/https://placehold.co/300x300?text=You can change the image.{/if}" width="300"
-                                 alt="Tomáš Turek">
+                                 alt="{$post->title}"
+                                 class="border border-dark">
                         </div>
                     </div>
                 </div>

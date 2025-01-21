@@ -42,21 +42,37 @@ final class EditPresenter extends Nette\Application\UI\Presenter
     {
         $form = new Form;
         $form->addText('title', 'Název událostí:')
+            ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
             ->setRequired();
         $form->addDate('eventdate', 'Datum konání:')
+            ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
             ->setRequired();
         $form->addText('opentime', 'Otevřeno od:')
+            ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
             ->setRequired();
         $form->addText('starttime', 'Začátek akce:')
+            ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
             ->setRequired();
         $form->addInteger('onsiteprice', 'Cena na místě v CZK:')
+            ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
             ->setRequired();
-        $form->addInteger('presaleprice', 'Cena předprodeje v CZK:');
-        $form->addText('tickets', 'Odkaz na vstupenky:');
-        $form->addTextArea('content', 'Poznámky k události:');
+        $form->addInteger('presaleprice', 'Cena předprodeje v CZK:')
+            ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
+        ;
+
+        $form->addText('tickets', 'Odkaz na vstupenky:')
+            ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
+        ;
+        $form->addTextArea('content', 'Poznámky k události:')
+            ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
+        ;
         // Přidáváme pole pro nahrávání souborů
-        $form->addUpload('image', 'Obrázek:');
-        $form->addSubmit('send', 'Uložit a publikovat');
+        $form->addUpload('image', 'Obrázek:')
+            ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
+        ;
+        $form->addSubmit('send', 'Uložit a publikovat')
+            ->setHtmlAttribute('class', 'btn btn-primary'); // Třída Bootstrap pro tlačítko
+        ;
         $form->onSuccess[] = $this->postFormSucceeded(...);
 
         return $form;
