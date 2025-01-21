@@ -2,6 +2,7 @@
 
 namespace App\UI\Edit;
 
+use App\Model\PostFacade;
 use Nette;
 use Nette\Application\UI\Form;
 use Nette\Http\FileUpload;
@@ -32,7 +33,7 @@ final class EditPresenter extends Nette\Application\UI\Presenter
 
     // Mysql login
     public function __construct(
-        private Nette\Database\Explorer $database,
+        private Nette\Database\Explorer $database, private PostFacade $facade
     )
     {
     }
@@ -87,22 +88,32 @@ final class EditPresenter extends Nette\Application\UI\Presenter
 
         // Pokud je k dispozici parametr id, znamená to, že budeme upravovat příspěvek
         if ($id) {
-
-            // Získání původního názvu souboru
-            $file = $data['image'];
-            $originalName = $file->getSanitizedName();
-            // Odstranění staré přípony (např. .jpeg)
-            $imageNameWithoutExtension = pathinfo($originalName, PATHINFO_FILENAME);
-            // Udelame novy nazev s webp pro ulozeni do mysql, protoze menime format
-            $newImageNameWebp = $imageNameWithoutExtension . ".webp";
-            $newImageNameWebp = strtolower($newImageNameWebp);
-            $data['image'] = $newImageNameWebp;
-
+            // Získání příspěvku z databáze
             $post = $this->database
                 ->table('posts')
                 ->get($id);
+
+            // Získání nahraného souboru z formuláře
+            /** @var Nette\Http\FileUpload $file */
+            $file = $data['image'];
+
+            // Pokud je obrázek nahraný a je platný
+            if ($file->isOk()) {
+                // Získání původního názvu souboru
+                $originalName = $file->getSanitizedName();
+                // Odstranění staré přípony (např. .jpeg)
+                $imageNameWithoutExtension = pathinfo($originalName, PATHINFO_FILENAME);
+                // Udelame novy nazev s webp pro ulozeni do mysql, protoze menime format
+                $newImageNameWebp = $imageNameWithoutExtension . ".webp";
+                $newImageNameWebp = strtolower($newImageNameWebp);
+                $data['image'] = $newImageNameWebp;
+            } else {
+                // Pokud obrázek nebyl nahrán, odstraníme klíč 'image' z dat
+                unset($data['image']);
+            }
+
+            // Aktualizace příspěvku v databázi
             $post->update($data);
-            //  Pokud parametr id není k dispozici, pak to znamená, že by měl být nový příspěvek přidán.
         } else {
 
             // Získání původního názvu souboru
@@ -354,6 +365,7 @@ final class EditPresenter extends Nette\Application\UI\Presenter
 
         // Přidáme pole $post do šablony
         $this->template->post = $post;
+
     }
 
 

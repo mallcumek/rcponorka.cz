@@ -20,7 +20,7 @@ final class PostFacade
     }
 
     // Metoda pro formátování datumu do CZ
-    public function formatDate(string|DateTime $date, string $locale = 'cs_CZ', string $pattern = 'EEEE d. MMMM yyyy'): string
+    public function formatDate(string|DateTime $date, string $locale = 'cs_CZ', string $pattern = 'EE d. MMMM yyyy'): string
     {
         $formatter = new \IntlDateFormatter(
             $locale,                       // Lokalizace (výchozí čeština)

@@ -32,10 +32,11 @@
                         <div n:foreach="$posts as $post" class="row schedule-item">
 
                             <div class="col-md-2 d-flex align-items-center">
-                                <time>{$post->created_at|date:'F j, Y'}</time>
+                                <!-- Použití formátovaného data z pole -->
+                                <time>{$formattedDates[$post->id]}</time>
                             </div>
                             <div class="col-md-10 d-flex">
-                                <div class="speaker  border border-warning ">
+                                <div class="speaker align-self-center  border border-warning ">
                                     <img loading="lazy" src="{if $post->image}/data/{$post->id}/{$post->image}{else}/https://placehold.co/300x300?text=You can change the image.{/if}" alt="Tomáš Turek">
                                 </div>
                                 <div class="text">
