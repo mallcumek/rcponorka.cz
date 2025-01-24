@@ -768,7 +768,19 @@ h6 {
 #schedule .schedule-item .text {
   flex-grow: 1; /* Text vyplní zbylý prostor vedle obrázku */
 }
+.nadpis-udalosti-mobil {
+  display:none;
+}
 
+@media (max-width: 576px) {
+  .nadpis-udalosti-mobil {
+    display:block;
+  }
+  .nadpis-udalosti-desktop {
+    display:none;
+  }
+
+}
 /*--------------------------------------------------------------
 # Gallery Section */
 

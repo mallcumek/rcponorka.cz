@@ -209,7 +209,7 @@ final class EditPresenter extends Nette\Application\UI\Presenter
         $newImageNameWebp = $imageNameWithoutExtension . ".webp";
         $newImageNameWebp = strtolower($newImageNameWebp);
         // Názvy pro menší obrázky webp do srcset, které následně uložíme jako soubory
-        $newImageNameWebp1920 = $imageNameWithoutExtension . "-1920w.webp";
+        $newImageNameWebp1920 = $imageNameWithoutExtension . "-1920wmax.webp";
         $newImageNameWebp1920 = strtolower($newImageNameWebp1920);
         $newImageNameWebp1800 = $imageNameWithoutExtension . "-1800w.webp";
         $newImageNameWebp1800 = strtolower($newImageNameWebp1800);
@@ -243,95 +243,58 @@ final class EditPresenter extends Nette\Application\UI\Presenter
                   $image = Image::fromFile($postDir . '/' . $originalImageNameStrtoLower);
         */
 
+        /* Vypínám ukládání původního velkýho obrázku do webp, chci mít max 1980w
         //pokud je obrazek vetsi nez 1920px tak ho ulož v puvodni velikosti
         if ($image->getWidth() >= 1920) {
             $image->sharpen();
+            // Ulož soubor do složky "$uploadDir = __DIR__ . '/../../../www/data'" (resized)
+            $image->save($postDir . '/' . $newImageNameWebp, 80, Image::WEBP);
         }
-        // Ulož soubor do složky "$uploadDir = __DIR__ . '/../../../../www/data'" (resized)
-        $image->save($postDir . '/' . $newImageNameWebp, 80, Image::WEBP);
+        */
 
-        //****************** Pro každou zmenšenou fotku zvášť resize blok **********************
+        //****************** Pro každou zmenšenou fotku zvlášť resize blok **********************
 
         // Vytvoření kopie původní instance obrázku v 1800w
         $thumb1920 = Image::fromString($image->toString());
-        //pokud je obrazek vetsi 1920px tak ho resizni na 1600 a zbytek dopocitej
+        // pokud je obrazek vetsi 1920px tak ho resizni na 1600 a zbytek dopocitej
         if ($thumb1920->getWidth() >= 1920) {
             $thumb1920->resize(1920, null);
             $thumb1920->sharpen();
+            $thumb1920->save($postDir . '/' . $newImageNameWebp1920, 80, Image::WEBP);
         }
-        $thumb1920->save($postDir . '/' . $newImageNameWebp1920, 80, Image::WEBP);
+        // jinak ho ulož v původním rozlišení a převeď do .webp
+        else{
+            $image->sharpen();
+            // Ulož soubor do složky "$uploadDir = __DIR__ . '/../../../www/data'" (resized)
+            $image->save($postDir . '/' . $newImageNameWebp1920, 80, Image::WEBP);
+        }
 
-        // Vytvoření kopie původní instance obrázku v 1800w
-        $thumb1800 = Image::fromString($image->toString());
-        if ($thumb1800->getWidth() >= 1800) {
-            $thumb1800->resize(1800, null);
-            $thumb1800->sharpen();
-        }
-        $thumb1800->save($postDir . '/' . $newImageNameWebp1800, 80, Image::WEBP);
-
-        // Vytvoření kopie původní instance obrázku v 1600w
-        $thumb1600 = Image::fromString($image->toString());
-        if ($thumb1600->getWidth() >= 1600) {
-            $thumb1600->resize(1600, null);
-            $thumb1600->sharpen();
-        }
-        $thumb1600->save($postDir . '/' . $newImageNameWebp1600, 80, Image::WEBP);
-
-        // Vytvoření kopie původní instance obrázku v 1400w
-        $thumb1400 = Image::fromString($image->toString());
-        if ($thumb1400->getWidth() >= 1400) {
-            $thumb1400->resize(1400, null);
-            $thumb1400->sharpen();
-        }
-        $thumb1400->save($postDir . '/' . $newImageNameWebp1400, 80, Image::WEBP);
-
-        // Vytvoření kopie původní instance obrázku v 1200w
-        $thumb1200 = Image::fromString($image->toString());
-        if ($thumb1200->getWidth() >= 1200) {
-            $thumb1200->resize(1200, null);
-            $thumb1200->sharpen();
-        }
-        $thumb1200->save($postDir . '/' . $newImageNameWebp1200, 80, Image::WEBP);
 
         // Vytvoření kopie původní instance obrázku v 1000w
         $thumb1000 = Image::fromString($image->toString());
         if ($thumb1000->getWidth() >= 1000) {
             $thumb1000->resize(1000, null);
             $thumb1000->sharpen();
+            $thumb1000->save($postDir . '/' . $newImageNameWebp1000, 80, Image::WEBP);
         }
-        $thumb1000->save($postDir . '/' . $newImageNameWebp1000, 80, Image::WEBP);
+
 
         // Vytvoření kopie původní instance obrázku v 800w
         $thumb800 = Image::fromString($image->toString());
         if ($thumb800->getWidth() >= 800) {
             $thumb800->resize(800, null);
             $thumb800->sharpen();
+            $thumb800->save($postDir . '/' . $newImageNameWebp800, 80, Image::WEBP);
         }
-        $thumb800->save($postDir . '/' . $newImageNameWebp800, 80, Image::WEBP);
 
-        // Vytvoření kopie původní instance obrázku v 600w
-        $thumb600 = Image::fromString($image->toString());
-        if ($thumb600->getWidth() >= 600) {
-            $thumb600->resize(600, null);
-            $thumb600->sharpen();
-        }
-        $thumb600->save($postDir . '/' . $newImageNameWebp600, 80, Image::WEBP);
 
         // Vytvoření kopie původní instance obrázku v 400w
         $thumb400 = Image::fromString($image->toString());
         if ($thumb400->getWidth() >= 400) {
             $thumb400->resize(400, null);
             $thumb400->sharpen();
+            $thumb400->save($postDir . '/' . $newImageNameWebp400, 80, Image::WEBP);
         }
-        $thumb400->save($postDir . '/' . $newImageNameWebp400, 80, Image::WEBP);
-
-        // Vytvoření kopie původní instance obrázku v 200w
-        $thumb200 = Image::fromString($image->toString());
-        if ($thumb200->getWidth() >= 200) {
-            $thumb200->resize(200, null);
-            $thumb200->sharpen();
-        }
-        $thumb200->save($postDir . '/' . $newImageNameWebp200, 80, Image::WEBP);
 
         //******************End Pro každou zmenšenou fotku zvášť resize blok **********************
 

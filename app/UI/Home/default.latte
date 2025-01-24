@@ -36,9 +36,16 @@
                                 <time>{$formattedDates[$post->id]}</time>
                             </div>
                             <div class="col-md-10 d-flex">
-                                <div class="speaker align-self-center  border border-warning ">
-                                    <img loading="lazy" src="{if $post->image}/data/{$post->id}/{$post->image}{else}/https://placehold.co/300x300?text=You can change the image.{/if}" alt="Tomáš Turek">
+                                <div class="speaker">
+                                    <a href="{link Post:show $post->id}#schedule">
+                                        <!-- Přepsání koncovky názvu obrázku z databáze, pro zobrazení malého resize náhledu -->
+                                        <img class="border border-dark" loading="lazy"
+                                             src="{if $post->image_path}{$post->image_path|replace:'.webp','-400w.webp'}{else}https://placehold.co/300x300?text=You can change the image{/if}"
+                                             alt="{$post->title}"
+                                             class="border border-dark">
+                                    </a>
                                 </div>
+
                                 <div class="text">
                                     <h3><a href="{link Post:show $post->id}#schedule">{$post->title}</a></h3>
                                     <p>Otevřeno: <strong>{$post->opentime}</strong> <br> Začátek: <strong>{$post->starttime}</strong>.</p>
@@ -46,9 +53,10 @@
                                         <a href="#about"></a> <br> Na místě: <strong>{$post->onsiteprice} Kč</strong>
                                         <br><button type="button" class="btn btn-sm btn-warning">Vstupenky</button>
                                     </p>
-                                    <p class="text-dark">{$post->content|truncate:256}</p>
+
                                 </div>
                             </div>
+                            <p class="text-dark">{$post->content|truncate:256}</p>
                         </div>
 
                     </div> <!-- End Schdule Day 1 col -->
