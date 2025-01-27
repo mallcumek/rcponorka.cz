@@ -31,9 +31,9 @@
                             </p>
                         </div>
                         <div class="post pb-3 text-center">{$post->content}</div>
-                        <div class=" pb-5 text-center ">
+                        <div class="pb-3 text-center ">
                             <!-- Přepsání koncovky názvu obrázku z databáze, pro zobrazení malého resize náhledu-->
-                            <img class="border border-dark" loading="lazy"
+                            <img class="border border-dark w-100" loading="lazy"
                             src="{if $post->image_path}{$post->image_path|replace:'.webp','-400w.webp'}{else}https://placehold.co/300x300?text=You can change the image{/if}"
                                  width="300"
                                  alt="{$post->title}"

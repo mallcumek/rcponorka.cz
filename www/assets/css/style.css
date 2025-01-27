@@ -42,6 +42,9 @@ h6 {
 .main-page {
   margin-top: 70px;
 }
+.error{
+  color:red;
+}
 
 /*--------------------------------------------------------------
 # Back to top button
@@ -169,7 +172,7 @@ h6 {
 # Navigation Menu
 --------------------------------------------------------------*/
 /**
-* Desktop Navigation 
+* Desktop Navigation
 */
 .navbar {
   padding: 0;
@@ -306,7 +309,7 @@ h6 {
 }
 
 /**
-* Mobile Navigation 
+* Mobile Navigation
 */
 .mobile-nav-toggle {
   color: #fff;
@@ -724,7 +727,7 @@ h6 {
   color:#19328e;
 }
 #schedule .schedule-item a:hover{
-  color:darkorange;
+  text-decoration: underline;
 }
 
 #schedule .schedule-item h3 span {

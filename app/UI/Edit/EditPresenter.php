@@ -69,15 +69,48 @@ final class EditPresenter extends Nette\Application\UI\Presenter
         ;
         // Přidáváme pole pro nahrávání souborů
         $form->addUpload('image', 'Obrázek:')
-            ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
-        ;
+            ->setHtmlAttribute('class', 'form-control')
+            ->addRule([$this, 'validateImage'], ' Soubor musí být obrázek a musí mít šířku alespoň 1000 pixelů.');
+
+
         $form->addSubmit('send', 'Uložit a publikovat')
             ->setHtmlAttribute('class', 'btn btn-primary'); // Třída Bootstrap pro tlačítko
-        ;
+
         $form->onSuccess[] = $this->postFormSucceeded(...);
 
         return $form;
     }
+    // Validace formuláře - kontrola aby soubor byl obrázek a zároveň větší nebo rovno 1000px *chatGPT
+    public function validateImage(Nette\Forms\Controls\UploadControl $control): bool
+    {
+        $file = $control->getValue(); // Získání souboru jako instance FileUpload
+
+        // Kontrola, zda byl soubor správně nahrán a je obrázek
+        if (!$file instanceof Nette\Http\FileUpload || !$file->isOk() || !$file->isImage()) {
+            return false;
+        }
+
+        // Získání rozměrů obrázku
+        $imageSize = @getimagesize($file->getTemporaryFile());
+        if ($imageSize === false) {
+            return false;
+        }
+
+        // Kontrola minimální šířky
+        if ($imageSize[0] < 1000) {
+            // Nastavení dynamické chybové zprávy
+            $control->addError(sprintf(
+                'Nahraný obrázek je příliš malý, má šířku %d pixelů.',
+                $imageSize[0]
+            ));
+            return false;
+        }
+
+        return true;
+    }
+
+
+
 
     // Tato metoda získá data z formuláře, vloží nebo je upraví do databáze, vytvoří zprávu pro uživatele o úspěšném uložení příspěvku a
     // přesměruje na stránku s novým příspěvkem, takže hned uvidíme, jak vypadá.
@@ -209,8 +242,8 @@ final class EditPresenter extends Nette\Application\UI\Presenter
         $newImageNameWebp = $imageNameWithoutExtension . ".webp";
         $newImageNameWebp = strtolower($newImageNameWebp);
         // Názvy pro menší obrázky webp do srcset, které následně uložíme jako soubory
-        $newImageNameWebp1920 = $imageNameWithoutExtension . "-1920wmax.webp";
-        $newImageNameWebp1920 = strtolower($newImageNameWebp1920);
+        $newImageNameWebp1920wmax = $imageNameWithoutExtension . "-1920wmax.webp";
+        $newImageNameWebp1920wmax = strtolower($newImageNameWebp1920wmax);
         $newImageNameWebp1800 = $imageNameWithoutExtension . "-1800w.webp";
         $newImageNameWebp1800 = strtolower($newImageNameWebp1800);
         $newImageNameWebp1600 = $imageNameWithoutExtension . "-1600w.webp";
@@ -254,23 +287,23 @@ final class EditPresenter extends Nette\Application\UI\Presenter
 
         //****************** Pro každou zmenšenou fotku zvlášť resize blok **********************
 
-        // Vytvoření kopie původní instance obrázku v 1800w
+        // Vytvoření kopie původní instance obrázku a resize do max. šířky 1920px
         $thumb1920 = Image::fromString($image->toString());
-        // pokud je obrazek vetsi 1920px tak ho resizni na 1600 a zbytek dopocitej
+        // pokud je obrazek vetsi nez 1920px tak ho resizni na 1920 a zbytek dopocitej
         if ($thumb1920->getWidth() >= 1920) {
             $thumb1920->resize(1920, null);
             $thumb1920->sharpen();
-            $thumb1920->save($postDir . '/' . $newImageNameWebp1920, 80, Image::WEBP);
+            $thumb1920->save($postDir . '/' . $newImageNameWebp1920wmax, 80, Image::WEBP);
         }
         // jinak ho ulož v původním rozlišení a převeď do .webp
         else{
             $image->sharpen();
             // Ulož soubor do složky "$uploadDir = __DIR__ . '/../../../www/data'" (resized)
-            $image->save($postDir . '/' . $newImageNameWebp1920, 80, Image::WEBP);
+            $image->save($postDir . '/' . $newImageNameWebp1920wmax, 80, Image::WEBP);
         }
 
 
-        // Vytvoření kopie původní instance obrázku v 1000w
+        // Vytvoření kopie původní instance obrázku a resize do 1000w
         $thumb1000 = Image::fromString($image->toString());
         if ($thumb1000->getWidth() >= 1000) {
             $thumb1000->resize(1000, null);
@@ -279,7 +312,7 @@ final class EditPresenter extends Nette\Application\UI\Presenter
         }
 
 
-        // Vytvoření kopie původní instance obrázku v 800w
+        // Vytvoření kopie původní instance obrázku a resize do 800w
         $thumb800 = Image::fromString($image->toString());
         if ($thumb800->getWidth() >= 800) {
             $thumb800->resize(800, null);
@@ -288,7 +321,7 @@ final class EditPresenter extends Nette\Application\UI\Presenter
         }
 
 
-        // Vytvoření kopie původní instance obrázku v 400w
+        // Vytvoření kopie původní instance obrázku a resize do 400w
         $thumb400 = Image::fromString($image->toString());
         if ($thumb400->getWidth() >= 400) {
             $thumb400->resize(400, null);

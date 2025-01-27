@@ -22,7 +22,7 @@
                                 <img id="image-preview"
                                      class="border border-dark"
 
-                                 src="{if $post->image}/data/{$post->id}/{$post->image}{else}/https://placehold.co/300x300?text=You can change the image.{/if}"
+                                 src="{if $post->image_path}{$post->image_path|replace:'.webp','-400w.webp'}{else}/https://placehold.co/300x300?text=You can change the image.{/if}"
                                  height="300" alt="Image preview" />
 
                         </div>

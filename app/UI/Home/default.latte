@@ -16,21 +16,14 @@
                     <h2>Program</h2>
                     <p>Kalendář akcí v rockovém klubu Ponorka, Pardubice.</p>
                     {if $user->isLoggedIn()}
-                    <a n:href="Edit:create">Napsat nový příspěvek</a>
+                        <a class="link-danger fw-bold" n:href="Edit:create">Vytvořit novou událost</a>
                     {/if}
                 </div>
-
-
-
                 <div class="tab-content row justify-content-center">
-
-
-                    <div  class="col-lg-9 tab-pane fade show active">
-
+                    <div class="col-lg-9 tab-pane fade show active">
                         {* Atribut n:foreach obaluje div blokem foreach
                            Začátek cyklu na výpis události *}
                         <div n:foreach="$posts as $post" class="row schedule-item">
-
                             <div class="col-md-2 d-flex align-items-center">
                                 <!-- Použití formátovaného data z pole -->
                                 <time>{$formattedDates[$post->id]}</time>
@@ -39,29 +32,27 @@
                                 <div class="speaker">
                                     <a href="{link Post:show $post->id}#schedule">
                                         <!-- Přepsání koncovky názvu obrázku z databáze, pro zobrazení malého resize náhledu -->
-                                        <img class="border border-dark" loading="lazy"
+                                        <img loading="lazy"
                                              src="{if $post->image_path}{$post->image_path|replace:'.webp','-400w.webp'}{else}https://placehold.co/300x300?text=You can change the image{/if}"
                                              alt="{$post->title}"
                                              class="border border-dark">
                                     </a>
                                 </div>
-
                                 <div class="text">
                                     <h3><a href="{link Post:show $post->id}#schedule">{$post->title}</a></h3>
-                                    <p>Otevřeno: <strong>{$post->opentime}</strong> <br> Začátek: <strong>{$post->starttime}</strong>.</p>
+                                    <p>Otevřeno: <strong>{$post->opentime}</strong> <br> Začátek:
+                                        <strong>{$post->starttime}</strong>.</p>
                                     <p>Předprodej: <strong>{$post->presaleprice} Kč</strong>
                                         <a href="#about"></a> <br> Na místě: <strong>{$post->onsiteprice} Kč</strong>
-                                        <br><button type="button" class="btn btn-sm btn-warning">Vstupenky</button>
+                                        <br>
+                                        <button type="button" class="btn btn-sm btn-warning">Vstupenky</button>
                                     </p>
-
                                 </div>
                             </div>
                             <p class="text-dark">{$post->content|truncate:256}</p>
                         </div>
 
                     </div> <!-- End Schdule Day 1 col -->
-
-
 
                 </div> <!-- End tab-content row-->
 
@@ -113,7 +104,8 @@
                     <form action="forms/contact.php" method="post" role="form" class="php-email-form">
                         <div class="row">
                             <div class="form-group col-md-6">
-                                <input type="text" name="name" class="form-control" id="name" placeholder="Jméno" required>
+                                <input type="text" name="name" class="form-control" id="name" placeholder="Jméno"
+                                       required>
                             </div>
                             <div class="form-group col-md-6 mt-3 mt-md-0">
                                 <input type="email" class="form-control" name="email" id="email" placeholder="Email"
@@ -125,7 +117,8 @@
                                    required>
                         </div>
                         <div class="form-group mt-3">
-                            <textarea class="form-control" name="message" rows="5" placeholder="Zpráva" required></textarea>
+                            <textarea class="form-control" name="message" rows="5" placeholder="Zpráva"
+                                      required></textarea>
                         </div>
                         <div class="my-3">
                             <div class="loading">Loading</div>
