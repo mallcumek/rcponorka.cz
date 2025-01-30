@@ -41,7 +41,7 @@
                 <li><a class="nav-link scrollto" href="{$basePath}/#hero">Domů</a></li>
                 <li><a class="nav-link scrollto" href="{$basePath}/#schedule">Program</a></li>
                 <li><a class="nav-link scrollto" href="{$basePath}/#contact">Kontakt</a></li>
-                <li><a class="nav-link scrollto" href="{$basePath}/gallery.php#gallery">Galerie</a></li>
+                <li><a class="nav-link scrollto" n:href="Gallery:default">Galerie</a></li>
                 {if $user->isLoggedIn()}
                     <a n:href="Dashboard:default" class="nav-link text-info disabled ">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">

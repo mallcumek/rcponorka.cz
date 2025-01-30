@@ -81,6 +81,7 @@ final class EditPresenter extends Nette\Application\UI\Presenter
         return $form;
     }
     // Validace formuláře - kontrola aby soubor byl obrázek a zároveň větší nebo rovno 1000px *chatGPT
+    // Metoda musí být public, jinak nefunguje po odeslání formuláře.
     public function validateImage(Nette\Forms\Controls\UploadControl $control): bool
     {
         $file = $control->getValue(); // Získání souboru jako instance FileUpload
@@ -99,6 +100,14 @@ final class EditPresenter extends Nette\Application\UI\Presenter
         // Kontrola minimální šířky
         if ($imageSize[0] < 1000) {
             // Nastavení dynamické chybové zprávy
+            // * $control je objekt třídy Nette\Forms\Controls\UploadControl.
+            // Tento objekt představuje formulářové pole pro nahrávání souboru. Je součástí Nette formulářů.
+            // $control je předán do metody validateImage jako argument.
+            // * addError je metoda třídy BaseControl, kterou UploadControl dědí.
+            // Metoda přidá chybovou zprávu přímo k danému formulářovému prvku.
+            // Tato chyba se pak zobrazí uživateli pod polem ve formuláři.
+            // * sprintf() je nativní PHP funkce, která vrací řetězec formátovaný podle zadané šablony.
+            // Šablona 'Nahraný obrázek je příliš malý, má šířku %d pixelů.' obsahuje místo %d, které je nahrazeno hodnotou $imageSize[0].
             $control->addError(sprintf(
                 'Nahraný obrázek je příliš malý, má šířku %d pixelů.',
                 $imageSize[0]
@@ -108,10 +117,6 @@ final class EditPresenter extends Nette\Application\UI\Presenter
 
         return true;
     }
-
-
-
-
     // Tato metoda získá data z formuláře, vloží nebo je upraví do databáze, vytvoří zprávu pro uživatele o úspěšném uložení příspěvku a
     // přesměruje na stránku s novým příspěvkem, takže hned uvidíme, jak vypadá.
     private function postFormSucceeded(Form $form, array $data): void

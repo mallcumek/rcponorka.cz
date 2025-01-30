@@ -3,17 +3,17 @@ body {
     color: #dcdde1;
 }
 #header{
-    background: rgba(6, 12, 34, 0.8);
+    background: black;
 }
 #main {
-    background: url(../img/ponorka-logo.webp) center center;
-    background-size: cover;
+    background-color: black;
+
     position: relative; /* Pro správné fungování pseudo-prvku */
 }
 
 #main:before {
     content: "";
-    background: rgba(6, 12, 34, 0.8); /* Stejné ztmavení jako v #hero */
+    background-color: black;
     position: absolute;
     top: 0;
     right: 0;
@@ -76,4 +76,10 @@ body {
     margin-bottom: 10px; /* Spodní okraj pro prostor mezi obrázkem a popisem */
     max-height: 100vh;
     object-fit: contain;
+}
+.masonry {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    z-index: 1 !important;
+    position: relative !important;
 }

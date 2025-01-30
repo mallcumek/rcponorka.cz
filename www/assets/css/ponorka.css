@@ -1,0 +1,28 @@
+body {
+    background-color: black;
+    color: #dcdde1;
+}
+#header{
+    background: rgba(6, 12, 34, 0.8);
+}
+#main {
+    background: url(../img/ponorka-logo.webp) center center;
+    background-size: cover;
+    position: relative; /* Pro správné fungování pseudo-prvku */
+}
+
+#main:before {
+    content: "";
+    background: rgba(6, 12, 34, 0.8); /* Stejné ztmavení jako v #hero */
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+.wrapper {
+    max-width: 1280px;
+}
+.detail-udalosti-col{
+    background: #101522;
+}
