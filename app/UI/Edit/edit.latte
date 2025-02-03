@@ -19,14 +19,19 @@
 
                         <div class="d-flex justify-content-center p-3 ">
 
-                                <img id="image-preview"
-                                     class="border border-dark"
+                            <img id="image-preview"
+                                 class="border border-dark"
 
                                  src="{if $post->image_path}{$post->image_path|replace:'.webp','-400w.webp'}{else}/https://placehold.co/300x300?text=You can change the image.{/if}"
-                                 height="300" alt="Image preview" />
-
+                                 height="300" alt="Image preview"/>
                         </div>
 
+                        <br>
+                        <a n:href="deletePost! $post->id"
+                                onclick="return confirm('Opravdu chcete smazat tento příspěvek?')"
+                                class="btn btn-danger m-2">
+                            Smazat příspěvek
+                        </a>
 
                     </div>
                 </div>

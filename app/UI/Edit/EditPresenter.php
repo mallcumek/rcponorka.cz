@@ -347,6 +347,14 @@ final class EditPresenter extends Nette\Application\UI\Presenter
         return '/data/' . $postId . '/' . $newImageNameWebp;
     }
 
+    //Tato metoda smaže příspěvek podle ID a přesměruje uživatele zpět na seznam příspěvků.
+    public function handleDeletePost(int $id): void
+    {
+        $this->facade->deletePost($id);
+        $this->flashMessage('Příspěvek byl úspěšně smazán.', 'success');
+        $this->redirect('Home:default');
+    }
+
     // Přidáme novou stránku edit do presenteru EditPresenter
     public function renderEdit(int $id): void
     {

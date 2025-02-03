@@ -25,7 +25,7 @@ final class HomePresenter extends Nette\Application\UI\Presenter
     // V šabloně nyní bude k dispozici proměnná $posts, ve které jsou příspěvky získané z databáze.
     public function renderDefault(): void
     {
-        $posts = $this->facade->getPublicArticles()->limit(5);
+        $posts = $this->facade->getPublicArticles()->limit(50);
 
         // Vytvoření pole formátovaných dat
         $formattedDates = [];
