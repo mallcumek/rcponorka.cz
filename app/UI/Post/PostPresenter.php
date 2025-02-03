@@ -25,7 +25,7 @@ final class PostPresenter extends Nette\Application\UI\Presenter
 
         // Použití formátování datumu z fasády
         // Vytvořená samostatná proměnna, i když by to šlo přidat do $post
-        $formattedDate = $this->facade->formatDate($post->created_at);
+        $formattedDate = $this->facade->formatDate($post->eventdate);
         $this->template->formattedDate = $formattedDate;
     }
 

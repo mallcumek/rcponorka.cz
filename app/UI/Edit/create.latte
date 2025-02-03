@@ -1,5 +1,46 @@
+{block head}
+    <link href="{$basePath}/assets/css/ponorka.css" rel="stylesheet">
+{/block}
 {block content}
-<h1>Nová událost</h1>
+<main id="main" class="">
+    <section id="gallery" class="">
 
-{* Vykreslení formuláře *}
-{control postForm}
+        <div class="container py-5 ">
+            <div class="section-header ">
+                <p class="text-start pb-3"><a n:href="Home:default#schedule">← zpět na program</a>
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 bg-light text-dark">
+
+
+                        <h1 class="text-center pt-3">Vytvořit událost</h1>
+
+                        {control postForm}
+
+                        <div class="d-flex justify-content-center p-3 ">
+
+                            <img id="image-preview"
+                                 class="border border-dark"
+
+                                 src="https://placehold.co/300x300?text=Náhled obrázku"
+                                 height="300" alt="Image preview" />
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script type="text/javascript">
+
+    // Preview an image before it is uploaded
+    document.getElementById('frm-postForm-image').onchange = evt => {
+        const [file] = evt.target.files;
+        if (file) {
+            document.getElementById('image-preview').src = URL.createObjectURL(file);
+        }
+    };
+</script>

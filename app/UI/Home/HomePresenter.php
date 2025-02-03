@@ -30,7 +30,7 @@ final class HomePresenter extends Nette\Application\UI\Presenter
         // Vytvoření pole formátovaných dat
         $formattedDates = [];
         foreach ($posts as $post) {
-            $formattedDates[$post->id] = $this->facade->formatDate($post->created_at);
+            $formattedDates[$post->id] = $this->facade->formatDate($post->eventdate);
         }
 
         // Předání dat do šablony

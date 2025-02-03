@@ -46,31 +46,33 @@ final class EditPresenter extends Nette\Application\UI\Presenter
             ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
             ->setRequired();
         $form->addDate('eventdate', 'Datum konání:')
-            ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
+            ->setHtmlAttribute('class', 'form-control')
             ->setRequired();
         $form->addText('opentime', 'Otevřeno od:')
-            ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
+            ->setHtmlAttribute('class', 'form-control')
             ->setRequired();
         $form->addText('starttime', 'Začátek akce:')
-            ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
+            ->setHtmlAttribute('class', 'form-control')
             ->setRequired();
         $form->addInteger('onsiteprice', 'Cena na místě v CZK:')
-            ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
+            ->setHtmlAttribute('class', 'form-control')
             ->setRequired();
         $form->addInteger('presaleprice', 'Cena předprodeje v CZK:')
-            ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
+            ->setHtmlAttribute('class', 'form-control')
+            ->setDefaultValue(0) // Nastaví výchozí hodnotu 0
+            ->setNullable(); // Umožní null hodnotu
         ;
 
         $form->addText('tickets', 'Odkaz na vstupenky:')
-            ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
+            ->setHtmlAttribute('class', 'form-control')
         ;
         $form->addTextArea('content', 'Poznámky k události:')
-            ->setHtmlAttribute('class', 'form-control') // Přidává třídu Bootstrap
+            ->setHtmlAttribute('class', 'form-control')
         ;
         // Přidáváme pole pro nahrávání souborů
         $form->addUpload('image', 'Obrázek:')
             ->setHtmlAttribute('class', 'form-control')
-            ->addRule([$this, 'validateImage'], ' Soubor musí být obrázek a musí mít šířku alespoň 1000 pixelů.');
+            ->addRule([$this, 'validateImage'], ' Soubor musí být obrázek a musí mít šířku alespoň 700 pixelů.');
 
 
         $form->addSubmit('send', 'Uložit a publikovat')
@@ -98,7 +100,7 @@ final class EditPresenter extends Nette\Application\UI\Presenter
         }
 
         // Kontrola minimální šířky
-        if ($imageSize[0] < 1000) {
+        if ($imageSize[0] < 700) {
             // Nastavení dynamické chybové zprávy
             // * $control je objekt třídy Nette\Forms\Controls\UploadControl.
             // Tento objekt představuje formulářové pole pro nahrávání souboru. Je součástí Nette formulářů.
@@ -168,7 +170,11 @@ final class EditPresenter extends Nette\Application\UI\Presenter
             //Titulek projede funkci webalize na seo titulek - vynecha znaky, diakritiku, male pismo, mezery na pomlcky. blabla
             $title_slug = Strings::webalize($data['title']);
             $data['title_slug'] = $title_slug;
-
+            // Pokud je prázdná nebo neexistuje, nahraď ji nulou (0).
+            // Ochrana vyplnění formuláře
+            if (!$data['presaleprice']) {
+                $data['presaleprice'] = 0;
+            }
             $post = $this->database
                 ->table('posts')
                 ->insert($data);

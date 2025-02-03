@@ -23,11 +23,16 @@
                         <div class="p-3 m-0 text-center ">
                             <p class="text-dark">Otevřeno: <strong>{$post->opentime}</strong><br> Začátek:
                                 <strong>{$post->starttime}</strong><br>
-                                Předprodej: <strong>{$post->presaleprice}</strong> CZK<br>
+                                {if $post->presaleprice}
+                                    Předprodej: <strong>{$post->presaleprice}</strong> CZK<br>
+                                {/if}
                                 Na místě: <strong>{$post->onsiteprice}</strong> CZK<br>
-                                <a href="#">
-                                    <button type="button" class="btn btn-sm btn-warning">Vstupenky</button>
-                                </a>
+                                {if $post->presaleprice}
+                                    <a href="#">
+                                        <button type="button" class="btn btn-sm btn-warning">Vstupenky</button>
+                                    </a>
+                                {/if}
+
                             </p>
                         </div>
                         <div class="post pb-3 text-center">{$post->content}</div>
