@@ -8,6 +8,9 @@
                 <div  class="section-header">
                     <h2 class="text-white">Galerie</h2>
                     <p class="text-white">Fotky z proběhlých akcí v Ponorce.</p>
+                    <div n:foreach="$posts as $post" class="row schedule-item">
+                        <h3><a href="{link Gallery:show $post->id}#schedule">{$post->title}</a></h3>
+                    </div>
                 </div>
                 <div class="wrapper">
                     <div class="masonry">

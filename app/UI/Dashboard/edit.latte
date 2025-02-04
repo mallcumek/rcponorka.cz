@@ -13,9 +13,9 @@
                     <div class="col-lg-6 bg-light text-dark">
 
 
-                        <h1 class="text-center pt-3">Upravit událost</h1>
+                        <h1 class="text-center pt-3">Upravit fotku v galerii</h1>
 
-                        {control postForm}
+                        {control galleryForm}
 
                         <div class="d-flex justify-content-center p-3 ">
 
@@ -27,10 +27,10 @@
                         </div>
 
                         <br>
-                        <a n:href="deletePost! $post->id"
+                      {* <a n:href="deletePost! $post->id"
                                 onclick="return confirm('Opravdu chcete smazat tento příspěvek?')"
                                 class="btn btn-danger m-2">
-                            Smazat příspěvek
+                            Smazat příspěvek*}
                         </a>
 
                     </div>
@@ -43,7 +43,7 @@
 <script type="text/javascript">
 
     // Preview an image before it is uploaded
-    document.getElementById('frm-postForm-image').onchange = evt => {
+    document.getElementById('frm-galleryForm-image').onchange = evt => {
         const [file] = evt.target.files;
         if (file) {
             document.getElementById('image-preview').src = URL.createObjectURL(file);

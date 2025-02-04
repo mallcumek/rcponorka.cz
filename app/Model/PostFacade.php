@@ -21,6 +21,18 @@ final class PostFacade
             ->where('created_at < ', new \DateTime)
             ->order('created_at DESC');
     }
+    public function getGalleryImages()
+    {
+        return $this->database
+            ->table('gallery')
+            ->order('id DESC');
+    }
+    public function getGalleryImage($id)
+    {
+        return $this->database
+            ->table('gallery')
+            ->get($id);
+    }
 
     // Metoda pro formátování datumu do CZ
     public function formatDate(string|DateTime $date, string $locale = 'cs_CZ', string $pattern = 'EE d. MMMM yyyy'): string
