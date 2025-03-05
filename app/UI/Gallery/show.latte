@@ -6,34 +6,37 @@
 {* Tento blok bude opět zobrazen v hlavní šabloně. Jak vidíte, chybí koncová značka {/block}. Ta je totiž nepovinná. *}
 {* Protože používáme atribut n:href, tak se Nette samo postará o generování odkazů. *}
 {block content}
-<main id="main" class="">
-    <section id="gallery" class="">
 
-        <div class="container py-5 ">
-            <div class="section-header ">
-                <p class="text-start pb-3"><a n:href="Gallery:default">← zpět </a>
+    <section id="gallery" class="p-0 m-0 pt-3">
+
+        <div class="container">
+
+                <div n:foreach="$flashes as $flash" n:class="alert, 'alert-' . $flash->type">{$flash->message}</div>
+
                     {if $user->isLoggedIn()}
-                        - <a n:href="Dashboard:edit $post->id" class="link-danger">upravit</a>
+            <p class="text-start pb-0 mb-0 fs-4"><a n:href="Gallery:default">← zpět do galerie</a>
+                        - <a n:href="Dashboard:edit $post->id" class="link-danger">upravit/smazat</a>
+                {else}
+            <p class="text-start pb-0 mb-0 fs-4"><a href="javascript:history.back()">← zpět</a>
                     {/if}
                 </p>
                 <div class="row justify-content-center">
-                    <h1 class="p-0 m-0  text-center text-warning  fw-bold " n:block="title">{$post->title}</h1>
+                    <h1 class="p-0 m-0 pb-2  text-center text-white  fw-bold fs-5 " n:block="title">{$post->title}</h1>
                     <div class="pb-3 text-center ">
-                        <!-- Přepsání koncovky názvu obrázku z databáze, pro zobrazení malého resize náhledu-->
-                        <img class="border border-dark w-100" loading="lazy"
+                        <!-- Přepsání koncovky názvu obrázku z databáze na -1920wmax.webp, pro největší dochované rozlišení nahraného souboru s width max. 1920px -->
+                        <img class="img-fluid border border-dark" loading="lazy"
                              src="{if $post->image_path}{$post->image_path|replace:'.webp','-1920wmax.webp'}{else}https://placehold.co/300x300?text=You can change the image{/if}"
-                             width="300"
+
                              alt="{$post->title}"
                              class="border border-dark">
                         </a>
 
                     </div>
                 </div>
-            </div>
-            <div class="wrapper">
-            </div>
+
+
         </div>
 
     </section>
-</main>
+
 

@@ -18,7 +18,11 @@ final class EditPresenter extends Nette\Application\UI\Presenter
     use RequireLoggedUser;
     // Add $imageStorage to templates (in order to use macros)
     use ImageStoragePresenterTrait;
-
+    protected function beforeRender()
+    {
+        parent::beforeRender();
+        $this->template->currentYear = date('Y');
+    }
     // Bez této funkce nelze použít "use ImageStoragePresenterTrait". Deklarace nejsou kompatibilní hlásí Tracy.
     // gpt: Abyste předešli konfliktu s metodou createTemplate z traitu, můžete v EditPresenter přepsat metodu createTemplate
     // Přepis metody createTemplate
@@ -48,20 +52,17 @@ final class EditPresenter extends Nette\Application\UI\Presenter
         $form->addDate('eventdate', 'Datum konání:')
             ->setHtmlAttribute('class', 'form-control')
             ->setRequired();
-        $form->addText('opentime', 'Otevřeno od:')
-            ->setHtmlAttribute('class', 'form-control')
-            ->setRequired();
         $form->addText('starttime', 'Začátek akce:')
             ->setHtmlAttribute('class', 'form-control')
             ->setRequired();
+        $form->addText('endtime', 'Konec akce:')
+            ->setHtmlAttribute('class', 'form-control');
         $form->addInteger('onsiteprice', 'Cena na místě v CZK:')
-            ->setHtmlAttribute('class', 'form-control')
-            ->setRequired();
+            ->setNullable()
+            ->setHtmlAttribute('class', 'form-control');
         $form->addInteger('presaleprice', 'Cena předprodeje v CZK:')
             ->setHtmlAttribute('class', 'form-control')
-            ->setDefaultValue(0) // Nastaví výchozí hodnotu 0
             ->setNullable(); // Umožní null hodnotu
-        ;
 
         $form->addText('tickets', 'Odkaz na vstupenky:')
             ->setHtmlAttribute('class', 'form-control')
@@ -174,6 +175,9 @@ final class EditPresenter extends Nette\Application\UI\Presenter
             // Ochrana vyplnění formuláře
             if (!$data['presaleprice']) {
                 $data['presaleprice'] = 0;
+            }
+            if (!$data['onsiteprice']) {
+                $data['onsiteprice'] = 0;
             }
             $post = $this->database
                 ->table('posts')

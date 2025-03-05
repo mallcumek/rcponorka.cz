@@ -23,6 +23,6 @@ application:
 
 
 database:
-	dsn: 'mysql:host=md417.wedos.net;dbname=d337245_ponorka'
-	user: w337245_ponorka
+	dsn: 'mysql:host=md417.wedos.net;dbname=d370971_ponorka'
+	user: w370971_ponorka
 	password: DavidMachek123.

@@ -4,177 +4,128 @@
 {block content}
     <main id="main" class="">
         <section id="gallery" class="">
-            <div class="container py-5 ">
-                <div  class="section-header">
+            <div class="container-fluid py-5">
+                <div class="section-header">
                     <h2 class="text-white">Galerie</h2>
-                    <p class="text-white">Fotky z proběhlých akcí v Ponorce.</p>
-                    <div n:foreach="$posts as $post" class="row schedule-item">
-                        <h3><a href="{link Gallery:show $post->id}#schedule">{$post->title}</a></h3>
+                    <p class="text-white pb-2">Fotky z proběhlých akcí v Ponorce.</p>
+
+                    <div class="wrapper ms-auto me-auto">
+                        {if $user->isLoggedIn()}
+                            <h3><a class="link-danger" n:href="Dashboard:create">Přidat fotku do galerie</a></h3>
+                        {/if}
+                        <div class="masonry">
+                            {* Cyklus na výpis obrázků galerie *}
+                            <div n:foreach="$posts as $post" class="masonry-brick">
+                                <div class="masonry-content bg-black">
+                                    <a href="{link Gallery:show $post->id}">
+                                        <img class="border border-dark w-100" loading="lazy"
+                                             src="{if $post->image_path}{$post->image_path|replace:'.webp','-1920wmax.webp'}{else}https://placehold.co/300x300?text=You can change the image{/if}"
+                                             width="200" height="200"
+                                             alt="{$post->title}">
+                                    </a>
+                                    <p class="masonry-description text-center"><strong>{$post->title}</strong></p>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="wrapper">
-                    <div class="masonry">
-                        <div class="masonry-brick ">
-                            <div class="masonry-content bg-black">
-                                <a href="{$basePath}/assets/img/gallery/gallery1.jpg">    <img decoding="async" src="{$basePath}/assets/img/gallery/gallery1.jpg" alt="Dummy Image" width="200" height="200" class=""></a>
-                                <p class="masonry-description text-center"> <strong>imi verita.</strong></p>
-                            </div>
-                        </div>
-                        <div class="masonry-brick">
-                            <div class="masonry-content">
-                                <a href="{$basePath}/assets/img/gallery/gallery6.jpg" >       <img decoding="async" src="{$basePath}/assets/img/gallery/gallery6.jpg" alt="Dummy Image" width="200" height="200" class=""></a>
-
-                                <p class="masonry-description text-center">Deleniti blanditiis iste cupiditate ea obcaecati corporis, quas nobis possimus molestiae. Sed, minima.</p>
-                            </div>
-                        </div>
-
-                        <div class="masonry-brick">
-                            <div class="masonry-content">
-                                <a href="{$basePath}/assets/img/gallery/gallery2.jpg" >       <img decoding="async" src="{$basePath}/assets/img/gallery/gallery2.jpg" alt="Dummy Image" width="200" height="200" class=""></a>
-
-                                <p class="masonry-description text-center"><strong>Consecterendis,</strong> delectus a amet perspiciatis iusto. Quia, quam, culpa.</p>
-                            </div>
-                        </div>
-                        <div class="masonry-brick">
-                            <div class="masonry-content">
-                                <a href="{$basePath}/assets/img/gallery/gallery3.jpg" >     <img decoding="async" src="{$basePath}/assets/img/gallery/gallery3.jpg" alt="Dummy Image" width="200" height="200" class=""></a>
-
-                                <p class="masonry-description text-center">Consecterendis, delectus a amet perspiciatis iusto. Quia, quam, culpa.</p>
-                            </div>
-                        </div>
-                        <div class="masonry-brick">
-                            <div class="masonry-content">
-                                <a href="{$basePath}/assets/img/gallery/gallery4.jpg" >      <img decoding="async" src="{$basePath}/assets/img/gallery/gallery4.jpg" alt="Dummy Image" width="200" height="200" class=""></a>
-
-                                <p class="masonry-description text-center">Consecterendis, delectus a amet perspiciatis iusto. Quia, quam, culpa.</p>
-                            </div>
-                        </div>
-
-                        <div class="masonry-brick">
-                            <div class="masonry-content">
-                                <a href="{$basePath}/assets/img/gallery/gallery5.jpg" >      <img decoding="async" src="{$basePath}/assets/img/gallery/gallery5.jpg" alt="Dummy Image" width="200" height="200" class=""></a>
-
-                                <p class="masonry-description text-center">Eligendi similique excepturi cumque nemo modi voluptates mollitia atque doloribus, laborum magnam itaque a! Dignissimos expedita vel minus impedit laudantium.</p>
-                            </div>
-                        </div>
-
-                        <div class="masonry-brick">
-                            <div class="masonry-content">
-                                <a href="{$basePath}/assets/img/gallery/gallery7.jpg" >   <img decoding="async" src="{$basePath}/assets/img/gallery/gallery7.jpg" alt="Dummy Image" width="200" height="200" class=""></a>
-
-                                <p class="masonry-description text-center">Deleniti blanditiis iste cupiditate ea obcaecati corporis, quas nobis possimus molestiae. Sed, minima.</p>
-                            </div>
-                        </div>
-                        <div class="masonry-brick">
-                            <div class="masonry-content">
-                                <a href="{$basePath}/assets/img/gallery/gallery8.jpg" >       <img decoding="async" src="{$basePath}/assets/img/gallery/gallery8.jpg" alt="Dummy Image" width="200" height="200" class=""></a>
-
-                                <p class="masonry-description text-center">Deleniti blanditiis iste cupiditate ea obcaecati corporis, quas nobis possimus molestiae. Sed, minima.</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <script src="{$basePath}/assets/js/imagesloaded.pkgd.min.js"></script>
-                    <script>
-                        /**
-                         * Set appropriate spanning to any masonry item
-                         *
-                         * Get different properties we already set for the masonry, calculate
-                         * height or spanning for any cell of the masonry grid based on its
-                         * content-wrapper's height, the (row) gap of the grid, and the size
-                         * of the implicit row tracks.
-                         *
-                         * @param item Object A brick/tile/cell inside the masonry
-                         */
-                        function resizeMasonryItem(item){
-                            /* Get the grid object, its row-gap, and the size of its implicit rows */
-                            var grid = document.getElementsByClassName('masonry')[0],
-                                rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap')),
-                                rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
-
-                            /*
-                             * Spanning for any brick = S
-                             * Grid's row-gap = G
-                             * Size of grid's implicitly create row-track = R
-                             * Height of item content = H
-                             * Net height of the item = H1 = H + G
-                             * Net height of the implicit row-track = T = G + R
-                             * S = H1 / T
-                             */
-                            var rowSpan = Math.ceil((item.querySelector('.masonry-content').getBoundingClientRect().height+rowGap)/(rowHeight+rowGap));
-
-                            /* Set the spanning as calculated above (S) */
-                            item.style.gridRowEnd = 'span '+rowSpan;
-                        }
-
-                        /**
-                         * Apply spanning to all the masonry items
-                         *
-                         * Loop through all the items and apply the spanning to them using
-                         * `resizeMasonryItem()` function.
-                         *
-                         * @uses resizeMasonryItem
-                         */
-                        function resizeAllMasonryItems(){
-                            // Get all item class objects in one list
-                            var allItems = document.getElementsByClassName('masonry-brick');
-
-                            /*
-                             * Loop through the above list and execute the spanning function to
-                             * each list-item (i.e. each masonry item)
-                             */
-                            // Projdi výše uvedený seznam a proveď funkci překrytí na každé položce
-                            // * Změna podmínky v cyklu for z > na < pomohla opravit nacitani layoutu po nacteni obrazku a i po otoceni displeje.
-                            for(var i = 0; i < allItems.length; i++){
-                                resizeMasonryItem(allItems[i]);
-                            }
-                        }
-
-                        /**
-                         * Resize the items when all the images inside the masonry grid
-                         * finish loading. This will ensure that all the content inside our
-                         * masonry items is visible.
-                         *
-                         * @uses ImagesLoaded
-                         * @uses resizeMasonryItem
-                         */
-                        function waitForImages() {
-                            var allItems = document.getElementsByClassName('masonry-brick');
-                            for(var i=0;i<allItems.length;i++){
-                                imagesLoaded( allItems[i], function(instance) {
-                                    var item = instance.elements[0];
-                                    resizeMasonryItem(item);
-                                } );
-                            }
-                        }
+            </div>
 
 
+            <script src="{$basePath}/assets/js/imagesloaded.pkgd.min.js"></script>
+            <script>
+                /**
+                 * Set appropriate spanning to any masonry item
+                 *
+                 * Get different properties we already set for the masonry, calculate
+                 * height or spanning for any cell of the masonry grid based on its
+                 * content-wrapper's height, the (row) gap of the grid, and the size
+                 * of the implicit row tracks.
+                 *
+                 * @param item Object A brick/tile/cell inside the masonry
+                 */
+                function resizeMasonryItem(item) {
+                    /* Get the grid object, its row-gap, and the size of its implicit rows */
+                    var grid = document.getElementsByClassName('masonry')[0],
+                        rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap')),
+                        rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
 
-                        // Změň velikost všech položek mřížky při načítání, změně velikosti a při změně orientace
-                        var masonryEvents = ['load', 'resize', 'orientationchange'];
-                        masonryEvents.forEach(function(event) {
-                            window.addEventListener(event, resizeAllMasonryItems);
+                    /*
+                     * Spanning for any brick = S
+                     * Grid's row-gap = G
+                     * Size of grid's implicitly create row-track = R
+                     * Height of item content = H
+                     * Net height of the item = H1 = H + G
+                     * Net height of the implicit row-track = T = G + R
+                     * S = H1 / T
+                     */
+                    var rowSpan = Math.ceil((item.querySelector('.masonry-content').getBoundingClientRect().height + rowGap) / (rowHeight + rowGap));
+
+                    /* Set the spanning as calculated above (S) */
+                    item.style.gridRowEnd = 'span ' + rowSpan;
+                }
+
+                /**
+                 * Apply spanning to all the masonry items
+                 *
+                 * Loop through all the items and apply the spanning to them using
+                 * `resizeMasonryItem()` function.
+                 *
+                 * @uses resizeMasonryItem
+                 */
+                function resizeAllMasonryItems() {
+                    // Get all item class objects in one list
+                    var allItems = document.getElementsByClassName('masonry-brick');
+
+                    /*
+                     * Loop through the above list and execute the spanning function to
+                     * each list-item (i.e. each masonry item)
+                     */
+                    // Projdi výše uvedený seznam a proveď funkci překrytí na každé položce
+                    // * Změna podmínky v cyklu for z > na < pomohla opravit nacitani layoutu po nacteni obrazku a i po otoceni displeje.
+                    for (var i = 0; i < allItems.length; i++) {
+                        resizeMasonryItem(allItems[i]);
+                    }
+                }
+
+                /**
+                 * Resize the items when all the images inside the masonry grid
+                 * finish loading. This will ensure that all the content inside our
+                 * masonry items is visible.
+                 *
+                 * @uses ImagesLoaded
+                 * @uses resizeMasonryItem
+                 */
+                function waitForImages() {
+                    var allItems = document.getElementsByClassName('masonry-brick');
+                    for (var i = 0; i < allItems.length; i++) {
+                        imagesLoaded(allItems[i], function (instance) {
+                            var item = instance.elements[0];
+                            resizeMasonryItem(item);
                         });
-
-                        // Přidání detekce zoomu a změny velikosti
-                        window.addEventListener('resize', function() {
-                            resizeAllMasonryItems();
-                        });
+                    }
+                }
 
 
-                        // Proveď změnu velikosti ještě jednou, když všechny obrázky dokončí načítání
-                        waitForImages();
-                    </script>
+                // Změň velikost všech položek mřížky při načítání, změně velikosti a při změně orientace
+                var masonryEvents = ['load', 'resize', 'orientationchange'];
+                masonryEvents.forEach(function (event) {
+                    window.addEventListener(event, resizeAllMasonryItems);
+                });
 
-                </div>
+                // Přidání detekce zoomu a změny velikosti
+                window.addEventListener('resize', function () {
+                    resizeAllMasonryItems();
+                });
+
+
+                // Proveď změnu velikosti ještě jednou, když všechny obrázky dokončí načítání
+                waitForImages();
+            </script>
+
+
         </section>
-
-
-
-
-
-
-
 
 
     </main><!-- End #main -->

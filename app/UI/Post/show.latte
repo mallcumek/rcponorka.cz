@@ -1,6 +1,10 @@
 {block head}
     <link href="{$basePath}/assets/css/ponorka.css" rel="stylesheet">
 {/block}
+{capture $postTitle}{$post->title}{ifset $formattedDate} - {$formattedDate}{/ifset}{/capture}
+
+
+
 
 {* Definice bloku s názvem „content“ stejně jako tomu bylo na úvodní stránce. *}
 {* Tento blok bude opět zobrazen v hlavní šabloně. Jak vidíte, chybí koncová značka {/block}. Ta je totiž nepovinná. *}
@@ -11,9 +15,10 @@
 
         <div class="container py-5 ">
             <div class="section-header ">
+                <div n:foreach="$flashes as $flash" n:class="alert, 'alert-' . $flash->type">{$flash->message}</div>
                 <p class="text-start pb-3"><a n:href="Home:default#schedule">← zpět na program</a>
                     {if $user->isLoggedIn()}
-                        - <a n:href="Edit:edit $post->id" class="link-danger">upravit</a>
+                        - <a n:href="Edit:edit $post->id" class="link-danger">upravit/smazat</a>
                     {/if}
                 </p>
                 <div class="row justify-content-center">
@@ -21,12 +26,18 @@
                         <div class="date text-center pt-2 ">{$formattedDate}</div>
                         <h1 class="p-0 m-0  text-center text-uppercase fw-bold " n:block="title">{$post->title}</h1>
                         <div class="p-3 m-0 text-center ">
-                            <p class="text-dark">Otevřeno: <strong>{$post->opentime}</strong><br> Začátek:
-                                <strong>{$post->starttime}</strong><br>
-                                {if $post->presaleprice}
-                                    Předprodej: <strong>{$post->presaleprice}</strong> CZK<br>
+                            <p class="text-dark">Začátek: <strong>{$post->starttime}</strong><br>
+                               
+
+                                {if $post->endtime}
+                                    Konec:   <strong>{$post->endtime}</strong><br>
                                 {/if}
-                                Na místě: <strong>{$post->onsiteprice}</strong> CZK<br>
+                                {if $post->onsiteprice}
+                                    Na místě: <strong>{$post->onsiteprice}</strong> Kč<br>
+                                {/if}
+                                {if $post->presaleprice}
+                                    Předprodej: <strong>{$post->presaleprice}</strong> Kč<br>
+                                {/if}
                                 {if $post->presaleprice}
                                     <a href="#">
                                         <button type="button" class="btn btn-sm btn-warning">Vstupenky</button>
@@ -39,11 +50,12 @@
                         <div class="pb-3 text-center ">
                             <!-- Přepsání koncovky názvu obrázku z databáze, pro zobrazení malého resize náhledu-->
                             <img class="border border-dark w-100" loading="lazy"
-                            src="{if $post->image_path}{$post->image_path|replace:'.webp','-400w.webp'}{else}https://placehold.co/300x300?text=You can change the image{/if}"
+                                 src="{if $post->image_path}{$post->image_path|replace:'.webp','-1920wmax.webp'}{else}https://placehold.co/300x300?text=You can change the image{/if}"
                                  width="300"
                                  alt="{$post->title}"
                                  class="border border-dark">
                             </a>
+
 
                         </div>
                     </div>

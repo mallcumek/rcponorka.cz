@@ -23,7 +23,11 @@ final class SignPresenter extends Nette\Application\UI\Presenter
 	#[Persistent]
 	public string $backlink = '';
 
-
+    protected function beforeRender()
+    {
+        parent::beforeRender();
+        $this->template->currentYear = date('Y');
+    }
 	// Dependency injection of form factory and user management facade
 	public function __construct(
 		private UserFacade $userFacade,
@@ -39,11 +43,11 @@ final class SignPresenter extends Nette\Application\UI\Presenter
 	protected function createComponentSignInForm(): Form
 	{
 		$form = $this->formFactory->create();
-		$form->addText('username', 'Username:')
-			->setRequired('Please enter your username.');
+		$form->addText('username', 'Jméno:')
+			->setRequired('Zadejte uživatelské jméno.');
 
-		$form->addPassword('password', 'Password:')
-			->setRequired('Please enter your password.');
+		$form->addPassword('password', 'Heslo:')
+			->setRequired('Zadejte své heslo.');
 
 		$form->addSubmit('send', 'Sign in');
 
@@ -70,13 +74,13 @@ final class SignPresenter extends Nette\Application\UI\Presenter
 	protected function createComponentSignUpForm(): Form
 	{
 		$form = $this->formFactory->create();
-		$form->addText('username', 'Pick a username:')
+		$form->addText('username', 'jmeno:')
 			->setRequired('Please pick a username.');
 
-		$form->addEmail('email', 'Your e-mail:')
+		$form->addEmail('email', 'e-mail:')
 			->setRequired('Please enter your e-mail.');
 
-		$form->addPassword('password', 'Create a password:')
+		$form->addPassword('password', 'Vytvořit heslo:')
 			->setOption('description', sprintf('at least %d characters', $this->userFacade::PasswordMinLength))
 			->setRequired('Please create a password.')
 			->addRule($form::MinLength, null, $this->userFacade::PasswordMinLength);

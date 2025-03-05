@@ -18,15 +18,17 @@ final class PostFacade
     {
         return $this->database
             ->table('posts')
-            ->where('created_at < ', new \DateTime)
-            ->order('created_at DESC');
+            ->where('eventdate >= ?', (new \DateTime())->format('Y-m-d 00:00:00'))
+            ->order('eventdate');
     }
+
     public function getGalleryImages()
     {
         return $this->database
             ->table('gallery')
             ->order('id DESC');
     }
+
     public function getGalleryImage($id)
     {
         return $this->database
@@ -48,10 +50,24 @@ final class PostFacade
         return $formatter->format($dateTime); // Vrací formátované datum
     }
 
-    // Metoda, která smaže záznam z databáze podle ID.
+    // Metoda pro formátování datumu do formátu "31.2.2025"
+    public function formatDateShort(string|DateTime $date): string
+    {
+        $dateTime = $date instanceof DateTime ? $date : new DateTime($date); // Převod na DateTime
+        return $dateTime->format('j.n.Y'); // Vrací formátované datum ve stylu "31.2.2025"
+    }
+
+    // Metoda, která smaže záznam Post z databáze podle ID.
     public function deletePost(int $id): void
     {
         $this->database->table('posts')->where('id', $id)->delete();
     }
+
+    // Metoda, která smaže záznam Gallery z databáze podle ID.
+    public function deleteGallery(int $id): void
+    {
+        $this->database->table('gallery')->where('id', $id)->delete();
+    }
+
 
 }

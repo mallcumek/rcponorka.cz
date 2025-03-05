@@ -1,8 +1,35 @@
 {* The sign-in page *}
+{block head}
+    <link href="{$basePath}/assets/css/ponorka.css" rel="stylesheet">
+{/block}
 
+{* Definice bloku s názvem „content“ stejně jako tomu bylo na úvodní stránce. *}
+{* Tento blok bude opět zobrazen v hlavní šabloně. Jak vidíte, chybí koncová značka {/block}. Ta je totiž nepovinná. *}
+{* Protože používáme atribut n:href, tak se Nette samo postará o generování odkazů. *}
 {block content}
-<h1 n:block=title>Sign In</h1>
+<main id="main" class="">
+    <section id="gallery" class="">
 
-{include bootstrap-form signInForm}
+        <div class="container py-5 ">
+            <div class="section-header ">
 
-<p class="text-center"><a n:href="up">Don't have an account yet? Sign up.</a></p>
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 bg-light login-form ">
+                        <h1>Přihlásit se</h1>
+                        {include bootstrap-form signInForm}
+
+
+
+                </div>
+            </div>
+            <div class="wrapper">
+            </div>
+        </div>
+
+    </section>
+</main>
+
+
+
+
+

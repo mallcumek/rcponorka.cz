@@ -2,9 +2,11 @@
     <!-- ======= Hero Section ======= -->
     <section id="hero">
         <div class="hero-container">
+            <div n:foreach="$flashes as $flash" n:class="alert, 'alert-' . $flash->type">{$flash->message}</div>
             <h1 class="mb-4 pb-0">Rock Club<br><span>Ponorka</span></h1>
             <a href="#schedule" class="about-btn scrollto">Program</a>
             <a href="#contact" class="about-btn scrollto">Kontakt</a>
+            <p class="text-white pt-2">Ponorka otevřená od 16:00 do 22:00.</p>
         </div>
     </section><!-- End Hero Section -->
 
@@ -14,13 +16,24 @@
             <div class="container">
                 <div class="section-header">
                     <h2>Program</h2>
-                    <p>Kalendář akcí v rockovém klubu Ponorka, Pardubice.</p>
+                    <p class="text-dark">Kalendář akcí v rockovém klubu Ponorka, Pardubice.</p>
                     {if $user->isLoggedIn()}
-                        <a class="link-danger fw-bold" n:href="Edit:create">Vytvořit novou událost</a>
+                        <h3><a class="link-danger fw-bold" n:href="Edit:create">Vytvořit novou událost</a></h3>
                     {/if}
                 </div>
+
                 <div class="tab-content row justify-content-center">
                     <div class="col-lg-9 tab-pane fade show active">
+
+                        <div class="d-flex justify-content-center pb-5">
+                            <a href="{$basePath}/assets/img/ponorka-brezen-w1000.webp">
+                        <img loading="lazy"
+                             src="{$basePath}/assets/img/ponorka-brezen-w1000.webp"
+                             alt="RC Ponorka Program"
+                             class="img-fluid border border-dark"
+                             width="500"
+                             ></a>
+                        </div>
                         {* Atribut n:foreach obaluje div blokem foreach
                            Začátek cyklu na výpis události *}
                         <div n:foreach="$posts as $post" class="row schedule-item">
@@ -28,31 +41,47 @@
                                 <!-- Použití formátovaného data z pole -->
                                 <time>{$formattedDates[$post->id]}</time>
                             </div>
-                            <div class="col-md-10 d-flex">
-                                <div class="speaker">
+                            <div class="col-md-10">
+                                <div class="speaker bg-transparent">
                                     <a href="{link Post:show $post->id}#schedule">
                                         <!-- Přepsání koncovky názvu obrázku z databáze, pro zobrazení malého resize náhledu -->
                                         <img loading="lazy"
                                              src="{if $post->image_path}{$post->image_path|replace:'.webp','-400w.webp'}{else}https://placehold.co/300x300?text=You can change the image{/if}"
                                              alt="{$post->title}"
-                                             class="border border-dark">
+                                             class="pt-1"
+                                             width="100"
+                                        height="100">
                                     </a>
                                 </div>
                                 <div class="text ">
-                                    <h3><a href="{link Post:show $post->id}#schedule">{$post->title}</a></h3>
-                                    <p>Otevřeno: <strong>{$post->opentime}</strong> <br> Začátek:
-                                        <strong>{$post->starttime}</strong>.</p>
-                                    <p>Na místě: <strong>{$post->onsiteprice} Kč</strong>
+                                    <h3 class="fs-4"><a href="{link Post:show $post->id}#schedule">{$post->title}</a>
+                                    </h3>
+                                    <p>Začátek: <strong>{$post->starttime}</strong> <br>
+
+                                        {if $post->endtime}
+                                            Konec:
+                                            <strong>{$post->endtime}</strong>
+                                        {/if}
+
                                     </p>
+
+                                    {if $post->onsiteprice}
+                                        <p>Na místě: <strong>{$post->onsiteprice} Kč</strong>
+                                        </p>
+                                    {/if}
                                     {if $post->presaleprice}
                                         <p>Předprodej: <strong>{$post->presaleprice} Kč</strong> <br>
-                                            <button type="button" class="btn btn-sm btn-warning">Vstupenky</button>
+                                            <a href="{$post->tickets}">
+                                                <button type="button" class="btn btn-sm btn-warning">Vstupenky</button>
+                                            </a>
                                         </p>
                                     {/if}
                                 </div>
-
+                                <p class="text-dark-udalost pt-1">{$post->content|truncate:256}</p>
                             </div>
-                            <p class="text-dark">{$post->content|truncate:256}</p>
+                            <p>{if $user->isLoggedIn()}
+                                    - <a n:href="Edit:edit $post->id" class="link-danger">upravit</a>
+                                {/if}</p>
                         </div>
 
                     </div> <!-- End Schdule Day 1 col -->
@@ -71,68 +100,155 @@
 
                 <div class="section-header">
                     <h2>Kontakt</h2>
-                    <p>Máte-li dotaz, pište, volejte, těšíme se na vás.</p>
+                    <p class="text-dark">Máte-li dotaz, pište, volejte, těšíme se na vás.
+                    </p>
                 </div>
-
+                <p class="text-center"><span class="text-uppercase">Ponorka otevřená od 16:00 do 22:00.</span></p>
                 <div class="row contact-info">
 
-
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-6">
                         <div class="contact-address">
                             <i class="bi bi-geo-alt"></i>
                             <h3>Club Ponorka</h3>
-                            <address>Jiráskova 29, 530 02 Pardubice I</address>
+                            <address class="text-dark">Jiráskova 29, 530 02 Pardubice I</address>
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-6">
                         <div class="contact-phone">
-                            <i class="bi bi-phone"></i>
-                            <h3>Telefon</h3>
-                            <p><a href="tel:+155895548855">+402 608 606 606</a></p>
+                            <a href="tel:+420603260359" class="text-dark" aria-label="Ponorka Telefon"><i class="bi bi-phone"></i></a>
+                            <a href="tel:+420603260359" class="text-dark"><h3>Telefon</h3></a>
+                            <p><a href="tel:+420603260359" class="text-dark">+420 603 260 359</a></p>
+                            <p><a href="tel:+420776627092" class="text-dark">+420 776 627 092</a></p>
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-6">
                         <div class="contact-email">
-                            <i class="bi bi-envelope"></i>
-                            <h3>Email</h3>
-                            <p><a href="mailto:info@example.com">info@rcponorka.cz</a></p>
+                            <a href="mailto:falcon.prod@seznam.cz" aria-label="Ponorka Email"><i class="bi bi-envelope"></i></a>
+                            <a href="mailto:falcon.prod@seznam.cz"><h3>Email</h3></a>
+                            <p><a href="mailto:falcon.prod@seznam.cz">falcon.prod@seznam.cz</a></p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-6">
+                        <div class="contact-email">
+                            <a href="https://www.facebook.com/p/RC-Ponorka-100059010897346/" aria-label="Ponorka Facebook"> <i
+                                        class="bi bi-facebook"></i></a>
+                            <a href="https://www.facebook.com/p/RC-Ponorka-100059010897346/"><h3>Facebook</h3></a>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-6">
+                        <div class="contact-email">
+                            <a href="https://www.instagram.com/explore/locations/894605490/rc-ponorka/" aria-label="Ponorka Instagram"> <i
+                                        class="bi bi-instagram"></i></a>
+                            <a href="https://www.instagram.com/explore/locations/894605490/rc-ponorka/"><h3>
+                                    Instagram</h3></a>
+
                         </div>
                     </div>
 
                 </div>
-                <h3>Napište nám zprávu</h3>
-                <div class="form">
-                    <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <input type="text" name="name" class="form-control" id="name" placeholder="Jméno"
-                                       required>
-                            </div>
-                            <div class="form-group col-md-6 mt-3 mt-md-0">
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Email"
-                                       required>
-                            </div>
+
+                <div class="row gy-4 mt-1">
+                    <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+                        <div id="map-container" title="Mapa Google"
+                             style="width: 100%; height: 400px; background-color: #ddd; display: flex; align-items: center; justify-content: center;">
+                            <p>Načítání mapy...</p>
                         </div>
-                        <div class="form-group mt-3">
-                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Předmět"
-                                   required>
-                        </div>
-                        <div class="form-group mt-3">
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                let mapContainer = document.getElementById("map-container");
+                                let mapLoaded = false;
+
+                                function loadGoogleMap() {
+                                    if (!mapLoaded) {
+                                        mapLoaded = true;
+                                        let iframe = document.createElement("iframe");
+                                        iframe.src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2562.690654911395!2d15.7820078!3d50.0358921!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470dcc8d5f622377%3A0xb527a79d428fe4d6!2sClub%20Ponorka!5e0!3m2!1scs!2scz!4v1739105875283!5m2!1scs!2scz";
+                                        iframe.width = "100%";
+                                        iframe.height = "400";
+                                        iframe.style.border = "0";
+                                        iframe.loading = "lazy";
+                                        mapContainer.innerHTML = "";
+                                        mapContainer.appendChild(iframe);
+                                    }
+                                }
+
+                                function checkViewport() {
+                                    let rect = mapContainer.getBoundingClientRect();
+                                    if (rect.top < window.innerHeight && rect.bottom >= 0) {
+                                        loadGoogleMap();
+                                        window.removeEventListener("scroll", checkViewport);
+                                    }
+                                }
+
+                                window.addEventListener("scroll", checkViewport);
+                                checkViewport();
+                            });
+                        </script>
+
+                    </div><!-- End Google Maps -->
+                    <div class="col-lg-6">
+                        <h3>Napište nám zprávu</h3>
+                        <div class="form">
+                            <form action="#name" method="post" role="form" class="php-email-form">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <input type="text" name="name" class="form-control" id="name"
+                                               placeholder="Jméno"
+                                               required>
+                                    </div>
+                                    <div class="form-group col-md-6 mt-3 mt-md-0">
+                                        <input type="email" class="form-control" name="email" id="email"
+                                               placeholder="Email"
+                                               required>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <input type="text" class="form-control" name="subject" id="subject"
+                                           placeholder="Předmět"
+                                           required>
+                                </div>
+                                <div class="form-group mt-3">
                             <textarea class="form-control" name="message" rows="5" placeholder="Zpráva"
                                       required></textarea>
+                                </div>
+                                <div class="my-3">
+                                    <div class="loading">Loading</div>
+                                    <div class="error-message"></div>
+                                    <div class="sent-message">Your message has been sent. Thank you!</div>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="text-dark">Odeslat zprávu</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="my-3">
-                            <div class="loading">Loading</div>
-                            <div class="error-message"></div>
-                            <div class="sent-message">Your message has been sent. Thank you!</div>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit">Odeslat zprávu</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
+
+
+                <div class="row">
+                    <h3 class="pt-4">Naši partneři</h3>
+                    <div class="d-flex flex-wrap gap-2   justify-content-center partneri align-items-center">
+                        <div><img loading="lazy" alt="MMA team Pardubice"
+                                  src="https://ctftmma.cz/images/mma-logo-black-transparent-400w.webp"
+                                  width="100"
+                                  height="100" class="rounded-circle mx-auto"></div>
+                        <div class="item"><img loading="lazy" src="https://ctftmma.cz/images/p_extremehobby200w.webp"
+                                               class="mx-auto" width="100" height="100" alt="partner" ></div>
+                        <div class="item"><img loading="lazy" src="https://ctftmma.cz/images/p_trofeje.cz400w.webp"
+                                               class="mx-auto " width="100" height="100" alt="partner2"></div>
+                        <div class="item"><img loading="lazy" src="https://ctftmma.cz/images/p_budostore.png"
+                                               class="mx-auto " width="100" height="100" alt="partner3"></div>
+                        <div class="item"><img loading="lazy" src="https://ctftmma.cz/images/p_carnelabs.webp"
+                                               class="mx-auto " width="100" height="100" alt="partner4"></div>
+
+                    </div>
+
+                </div>
+
 
             </div>
         </section><!-- End Contact Section -->

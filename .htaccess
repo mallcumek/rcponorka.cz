@@ -1,2 +1,10 @@
 RewriteEngine On
+
+# *** 1️⃣ Přesměrování aliasů Wedos (odstranění /domains/) ***
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{REQUEST_URI} ^/domains/
+RewriteRule (.*) https://rcponorka.cz/ [R=301,L]
+
+# *** 2️⃣ Přesměrování všeho ostatního do /www/ ***
+RewriteCond %{REQUEST_URI} !^/www/ [NC]
 RewriteRule (.*) www/$1 [L]

@@ -24,7 +24,11 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
     use RequireLoggedUser;
     // Add $imageStorage to templates (in order to use macros)
     use ImageStoragePresenterTrait;
-
+    protected function beforeRender()
+    {
+        parent::beforeRender();
+        $this->template->currentYear = date('Y');
+    }
     // Bez této funkce nelze použít "use ImageStoragePresenterTrait". Deklarace nejsou kompatibilní hlásí Tracy.
     // gpt: Abyste předešli konfliktu s metodou createTemplate z traitu, můžete v EditPresenter přepsat metodu createTemplate
     // Přepis metody createTemplate
@@ -49,8 +53,7 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
     {
         $form = new Form;
         $form->addTextArea('title', 'Název/popis fotky:')
-            ->setHtmlAttribute('class', 'form-control')
-        ;
+            ->setHtmlAttribute('class', 'form-control border border-dark');
         // Přidáváme pole pro nahrávání souborů
         $form->addUpload('image', 'Obrázek:')
             ->setHtmlAttribute('class', 'form-control')
@@ -189,7 +192,7 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
         }
 
         $this->flashMessage('Příspěvek byl úspěšně publikován.', 'success');
-        $this->redirect('Home:default');
+        $this->redirect('Gallery:show', $post->id);
     }
 
     private function clearDir(string $dir): void
@@ -323,6 +326,14 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
 
         // Uloží do funkce string cesty s názvem souboru pro následné uložení do mysql. Strašně důležitý.
         return '/gallery_data/' . $postId . '/' . $newImageNameWebp;
+    }
+
+    //Tato metoda smaže příspěvek podle ID a přesměruje uživatele zpět na seznam příspěvků.
+    public function handleDeleteGallery(int $id): void
+    {
+        $this->facade->deleteGallery($id);
+        $this->flashMessage('Příspěvek z galerie byl úspěšně smazán.', 'success');
+        $this->redirect('Gallery:default');
     }
 
     // Přidáme novou stránku edit do presenteru EditPresenter

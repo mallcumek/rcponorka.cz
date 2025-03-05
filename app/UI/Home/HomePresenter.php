@@ -19,7 +19,11 @@ final class HomePresenter extends Nette\Application\UI\Presenter
     {
     }
 
-
+    protected function beforeRender()
+    {
+        parent::beforeRender();
+        $this->template->currentYear = date('Y');
+    }
 
     // Nyní načteme příspěvky z databáze a pošleme je do šablony, která je následně vykreslí jako HTML kód.
     // V šabloně nyní bude k dispozici proměnná $posts, ve které jsou příspěvky získané z databáze.

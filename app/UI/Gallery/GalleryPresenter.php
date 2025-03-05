@@ -24,7 +24,15 @@ final class GalleryPresenter extends Nette\Application\UI\Presenter
     {
     }
 
-
+    protected function beforeRender()
+    {
+        parent::beforeRender();
+        $this->template->currentYear = date('Y');
+        // Použije jiný layout pouze pro show.latte
+        if ($this->getAction() === 'show') {
+            $this->setLayout(__DIR__ . '/@galleryshow.latte');
+        }
+    }
 
     // Nyní načteme příspěvky z databáze a pošleme je do šablony, která je následně vykreslí jako HTML kód.
     // V šabloně nyní bude k dispozici proměnná $posts, ve které jsou příspěvky získané z databáze.
