@@ -236,46 +236,19 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
         // Názvy pro menší obrázky webp do srcset, které následně uložíme jako soubory
         $newImageNameWebp1920wmax = $imageNameWithoutExtension . "-1920wmax.webp";
         $newImageNameWebp1920wmax = strtolower($newImageNameWebp1920wmax);
-        $newImageNameWebp1800 = $imageNameWithoutExtension . "-1800w.webp";
-        $newImageNameWebp1800 = strtolower($newImageNameWebp1800);
-        $newImageNameWebp1600 = $imageNameWithoutExtension . "-1600w.webp";
-        $newImageNameWebp1600 = strtolower($newImageNameWebp1600);
-        $newImageNameWebp1400 = $imageNameWithoutExtension . "-1400w.webp";
-        $newImageNameWebp1400 = strtolower($newImageNameWebp1400);
-        $newImageNameWebp1200 = $imageNameWithoutExtension . "-1200w.webp";
-        $newImageNameWebp1200 = strtolower($newImageNameWebp1200);
         $newImageNameWebp1000 = $imageNameWithoutExtension . "-1000w.webp";
         $newImageNameWebp1000 = strtolower($newImageNameWebp1000);
         $newImageNameWebp800 = $imageNameWithoutExtension . "-800w.webp";
         $newImageNameWebp800 = strtolower($newImageNameWebp800);
-        $newImageNameWebp600 = $imageNameWithoutExtension . "-600w.webp";
-        $newImageNameWebp600 = strtolower($newImageNameWebp600);
         $newImageNameWebp400 = $imageNameWithoutExtension . "-400w.webp";
         $newImageNameWebp400 = strtolower($newImageNameWebp400);
-        $newImageNameWebp200 = $imageNameWithoutExtension . "-200w.webp";
-        $newImageNameWebp200 = strtolower($newImageNameWebp200);
+
 
         // Přečtení obsahu souboru z objektu FileUpload
         $fileContent = $file->getContents();
         // Vytvoření instance třídy Image pro manipulaci s obrázkem
         $image = Image::fromString($fileContent);
 
-        /* Verze s ulozenim puvodniho obrazku na disk a nasledne cteni z disku na vytvoreni objektu
-
-                // Přesun souboru do cílového adresáře
-                 $file->move($postDir . '/' . $originalImageNameStrtoLower);
-                // Vytvoření instance třídy Image pro manipulaci s obrázkem
-                  $image = Image::fromFile($postDir . '/' . $originalImageNameStrtoLower);
-        */
-
-        /* Vypínám ukládání původního velkýho obrázku do webp, chci mít max 1980w
-        //pokud je obrazek vetsi nez 1920px tak ho ulož v puvodni velikosti
-        if ($image->getWidth() >= 1920) {
-            $image->sharpen();
-            // Ulož soubor do složky "$uploadDir = __DIR__ . '/../../../www/data'" (resized)
-            $image->save($postDir . '/' . $newImageNameWebp, 80, Image::WEBP);
-        }
-        */
 
         //****************** Pro každou zmenšenou fotku zvlášť resize blok **********************
 
@@ -293,8 +266,6 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
             // Ulož soubor do složky "$uploadDir = __DIR__ . '/../../../www/data'" (resized)
             $image->save($postDir . '/' . $newImageNameWebp1920wmax, 80, Image::WEBP);
         }
-
-
         // Vytvoření kopie původní instance obrázku a resize do 1000w
         $thumb1000 = Image::fromString($image->toString());
         if ($thumb1000->getWidth() >= 1000) {
@@ -302,8 +273,6 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
             $thumb1000->sharpen();
             $thumb1000->save($postDir . '/' . $newImageNameWebp1000, 80, Image::WEBP);
         }
-
-
         // Vytvoření kopie původní instance obrázku a resize do 800w
         $thumb800 = Image::fromString($image->toString());
         if ($thumb800->getWidth() >= 800) {
@@ -311,8 +280,6 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
             $thumb800->sharpen();
             $thumb800->save($postDir . '/' . $newImageNameWebp800, 80, Image::WEBP);
         }
-
-
         // Vytvoření kopie původní instance obrázku a resize do 400w
         $thumb400 = Image::fromString($image->toString());
         if ($thumb400->getWidth() >= 400) {
@@ -320,7 +287,6 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
             $thumb400->sharpen();
             $thumb400->save($postDir . '/' . $newImageNameWebp400, 80, Image::WEBP);
         }
-
         //******************End Pro každou zmenšenou fotku zvášť resize blok **********************
 
 
@@ -335,6 +301,51 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
         $this->flashMessage('Příspěvek z galerie byl úspěšně smazán.', 'success');
         $this->redirect('Gallery:default');
     }
+
+
+    // Továrna na formulář pro fotku galerie
+    protected function createComponentOpeningForm(): Form
+    {
+        $form = new Form;
+        $form->addTextArea('content', 'Otevírací doba')
+            ->setHtmlAttribute('rows', 3)
+            ->setHtmlAttribute('class', 'form-control border border-dark');
+        $form->addSubmit('send', 'Uložit otevírací dobu')
+            ->setHtmlAttribute('class', 'btn btn-primary'); // Třída Bootstrap pro tlačítko
+        // Načtení existujících dat z databáze
+        $openingData = $this->database->table('openinghours')->fetch();
+        if ($openingData) {
+            $form->setDefaults([
+                'content' => $openingData->content,
+            ]);
+        }
+        $form->onSuccess[] = $this->openingFormSucceeded(...);
+        return $form;
+    }
+    private function openingFormSucceeded(Form $form, array $data): void
+    {
+        // V databázi existuje jen jeden řádek s ID 1
+        $id = 1;
+
+        // Načtení řádku z databáze
+        $post = $this->database->table('openinghours')->get($id);
+
+        if (!$post) {
+            $this->error('Řádek v tabulce openinghours neexistuje!');
+        }
+
+        // Aktualizace obsahu tabulky
+        $post->update(['content' => $data['content']]);
+
+        // Flash zpráva o úspěchu
+        $this->flashMessage('Otevírací doba byla aktualizována.', 'success');
+        $this->redirect('this');
+    }
+
+
+
+
+
 
     // Přidáme novou stránku edit do presenteru EditPresenter
     public function renderEdit(int $id): void

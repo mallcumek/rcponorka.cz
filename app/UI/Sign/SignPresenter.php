@@ -81,11 +81,11 @@ final class SignPresenter extends Nette\Application\UI\Presenter
 			->setRequired('Please enter your e-mail.');
 
 		$form->addPassword('password', 'Vytvořit heslo:')
-			->setOption('description', sprintf('at least %d characters', $this->userFacade::PasswordMinLength))
+			->setOption('description', sprintf('alespoň 7 znaků', $this->userFacade::PasswordMinLength))
 			->setRequired('Please create a password.')
 			->addRule($form::MinLength, null, $this->userFacade::PasswordMinLength);
 
-		$form->addSubmit('send', 'Sign up');
+		$form->addSubmit('send', 'Zaregistrovat');
 
 		// Handle form submission
 		$form->onSuccess[] = function (Form $form, \stdClass $data): void {

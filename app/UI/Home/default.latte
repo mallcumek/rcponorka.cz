@@ -25,15 +25,15 @@
                 <div class="tab-content row justify-content-center">
                     <div class="col-lg-9 tab-pane fade show active">
 
-                        <div class="d-flex justify-content-center pb-5">
-                            <a href="{$basePath}/assets/img/ponorka-brezen-w1000.webp">
+                      {*  <div class="d-flex justify-content-center pb-5">
+                            <a href="{$basePath}/assets/img/ponorka-duben-1000w.webp">
                         <img loading="lazy"
-                             src="{$basePath}/assets/img/ponorka-brezen-w1000.webp"
+                             src="{$basePath}/assets/img/ponorka-duben-1000w.webp"
                              alt="RC Ponorka Program"
                              class="img-fluid border border-dark"
                              width="500"
                              ></a>
-                        </div>
+                        </div>*}
                         {* Atribut n:foreach obaluje div blokem foreach
                            Začátek cyklu na výpis události *}
                         <div n:foreach="$posts as $post" class="row schedule-item">
@@ -232,19 +232,20 @@
                 <div class="row">
                     <h3 class="pt-4">Naši partneři</h3>
                     <div class="d-flex flex-wrap gap-2   justify-content-center partneri align-items-center">
-                        <div><img loading="lazy" alt="MMA team Pardubice"
+                        <div><a href="https://ctftmma.cz" title="CTFT MMA Pardubice"> <img loading="lazy" alt="MMA team Pardubice"
                                   src="https://ctftmma.cz/images/mma-logo-black-transparent-400w.webp"
                                   width="100"
-                                  height="100" class="rounded-circle mx-auto"></div>
-                        <div class="item"><img loading="lazy" src="https://ctftmma.cz/images/p_extremehobby200w.webp"
-                                               class="mx-auto" width="100" height="100" alt="partner" ></div>
-                        <div class="item"><img loading="lazy" src="https://ctftmma.cz/images/p_trofeje.cz400w.webp"
-                                               class="mx-auto " width="100" height="100" alt="partner2"></div>
-                        <div class="item"><img loading="lazy" src="https://ctftmma.cz/images/p_budostore.png"
-                                               class="mx-auto " width="100" height="100" alt="partner3"></div>
-                        <div class="item"><img loading="lazy" src="https://ctftmma.cz/images/p_carnelabs.webp"
-                                               class="mx-auto " width="100" height="100" alt="partner4"></div>
-
+                                  height="100" class="rounded-circle mx-auto" alt="CTFT MMA klub Pardubice"></a></div>
+                        <div class="item"><a href="https://www.hayashi.cz/" rel="nofollow"> <img loading="lazy" src="https://ctftmma.cz/images/hayashi.webp"
+                                               class="mx-auto" width="100" height="100" alt="hayashi"></a></div>
+                        <div class="item"><a href="https://www.foxylife.cz/" rel="nofollow"><img loading="lazy" src="https://ctftmma.cz/images/foxylife.webp"
+                                               class="mx-auto" width="100" height="100" alt="foxylife" ></a></div>
+                        <div class="item"><a href="https://www.trofeje.cz/" rel="nofollow"><img loading="lazy" src="https://ctftmma.cz/images/p_trofeje.cz400w.webp"
+                                               class="mx-auto " width="100" height="100" alt="partner2"></a></div>
+                        <div class="item"><a href="https://www.budostore.cz/" rel="nofollow"><img loading="lazy" src="https://ctftmma.cz/images/p_budostore.png"
+                                               class="mx-auto " width="100" height="100" alt="partner3"></a></div>
+                        <div class="item"><a href="https://www.carnelabs.eu/" rel="nofollow"><img loading="lazy" src="https://ctftmma.cz/images/p_carnelabs.webp"
+                                               class="mx-auto " width="100" height="100" alt="partner4"></a></div>
                     </div>
 
                 </div>

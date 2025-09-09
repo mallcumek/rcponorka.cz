@@ -21,8 +21,11 @@
 
 
 <!-- Favicons -->
-    <link href="{$basePath}/assets/img/favicon.png" rel="icon">
-    <link href="{$basePath}/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
     <!-- Vendor CSS Files -->
     <link href="{$basePath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!--  pro PHPStorm nápovědu,  bez CDN prostě nenapovídá styly
@@ -30,11 +33,7 @@
     <link href="{$basePath}/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <!-- Template Main CSS File -->
     <link href="{$basePath}/assets/css/style.css" rel="stylesheet">
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
+
     {block head}
     {/block}
 
@@ -73,10 +72,10 @@
                     <li><a n:href="Sign:out" class="nav-link text-danger">Odhlásit se</a></li>
 
                 {else}
-                {*  odkaz na login do admina
-                  <a n:href="Sign:in" class="nav-link text-primary ">
-                        <i class="bi bi-key fs-3"></i>
-                    </a> *}
+                {*  odkaz na login do admina*}
+                  <a n:href="Sign:in" class="nav-link text-secondary ">
+                        <i class="bi bi-key fs-6 opacity-50"></i>
+                    </a>
                 {/if}
             </ul>
             <i class="bi bi-list mobile-nav-toggle fs-2"></i>
@@ -116,7 +115,7 @@
             Licensing information: https://bootstrapmade.com/license/
             Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=TheEvent
           -->
-            Vytvořil <a href="https://martin.krsik.com/" class="text-white fw-bold">Martin Kršík</a>
+            Created by <a href="https://martin.krsik.com/" class="text-white fw-bold">Mallcom</a>
             <a href="#" class="back-to-top d-flex align-items-center justify-content-center" style="display: none;">
                 <i class="bi bi-arrow-up-short"></i>
             </a>
