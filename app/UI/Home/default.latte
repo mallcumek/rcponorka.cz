@@ -193,37 +193,33 @@
                     <div class="col-lg-6">
                         <h3>Napište nám zprávu</h3>
                         <div class="form">
-                            <form action="#name" method="post" role="form" class="php-email-form">
+                            <div class="my-3">
+                                {foreach $flashes as $flash}
+                                    <div n:class="$flash->type === 'success' ? 'sent-message', $flash->type === 'error' ? 'error-message'">
+                                        {$flash->message}
+                                    </div>
+                                {/foreach}
+                            </div>
+                            {form contactForm, class => "php-email-form"} <!-- Začátek formuláře; aplikujeme stávající CSS třídu -->
                                 <div class="row">
                                     <div class="form-group col-md-6">
-                                        <input type="text" name="name" class="form-control" id="name"
-                                               placeholder="Jméno"
-                                               required>
+                                        <input n:name="name" type="text" class="form-control" placeholder="Jméno" required>
                                     </div>
                                     <div class="form-group col-md-6 mt-3 mt-md-0">
-                                        <input type="email" class="form-control" name="email" id="email"
-                                               placeholder="Email"
-                                               required>
+                                        <input n:name="email" type="email" class="form-control" placeholder="Email" required>
                                     </div>
                                 </div>
                                 <div class="form-group mt-3">
-                                    <input type="text" class="form-control" name="subject" id="subject"
-                                           placeholder="Předmět"
-                                           required>
+                                    <input n:name="subject" type="text" class="form-control" placeholder="Předmět" required>
                                 </div>
                                 <div class="form-group mt-3">
-                            <textarea class="form-control" name="message" rows="5" placeholder="Zpráva"
-                                      required></textarea>
-                                </div>
-                                <div class="my-3">
-                                    <div class="loading">Loading</div>
-                                    <div class="error-message"></div>
-                                    <div class="sent-message">Your message has been sent. Thank you!</div>
+                                    <textarea n:name="message" class="form-control" rows="5" placeholder="Zpráva" required></textarea>
                                 </div>
                                 <div class="text-center">
-                                    <button type="submit" class="text-dark">Odeslat zprávu</button>
+                                    <button type="submit" n:name="send" class="text-dark">Odeslat zprávu</button>
                                 </div>
-                            </form>
+                            {/form}
+
                         </div>
                     </div>
                 </div>
