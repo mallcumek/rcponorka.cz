@@ -78,7 +78,7 @@ final class HomePresenter extends Nette\Application\UI\Presenter
         $this->flashMessage('Zpráva byla úspěšně odeslána.', 'success');
 
         // Přesměruje zpět na tuto stránku s kotvou #contact, aby stránka scrollovala k formuláři
-        $this->redirect('this#contact');  // redirect na aktuální stránku + kotva
+        $this->redirect('this#hero');  // redirect na aktuální stránku + kotva
     }
 
 

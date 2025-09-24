@@ -19,16 +19,16 @@ final class ContactFacade
         // pevný From z tvé domény kvůli SPF/DMARC
         $mail->setFrom('no-reply@rcponorka.cz', 'RC Ponorka')
 
-// reply půjde uživateli (jméno z formuláře zůstává)
+// reply půjde uživateli co vymplnil formulář
             ->addReplyTo($email, $name)
-        ->addTo('botsie@seznam.cz')            // první cílový e-mail
-        ->addTo('martin.krsik@gmail.com')      // druhý cílový e-mail
-        ->setSubject($subject)                 // předmět zprávy z formuláře
+        ->addTo('botsie@seznam.cz')
+        ->addTo('martin.krsik@gmail.com')
+        ->setSubject($subject)
         ->setBody(
                 "Jméno: {$name}\n" .
                 "E-mail: {$email}\n\n" .
                 "Zpráva:\n{$message}\n"
-            );                   // text zprávy (čistý text)
+            );
 
         $this->mailer->send($mail);  // odešle e-mail pomocí zvolené metody (výchozí PHP mail)
     }
