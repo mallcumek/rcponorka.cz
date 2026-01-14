@@ -8,3 +8,5 @@ log
 /www/assets/img/
 /www/data/
 /www/gallery_data/
+adminer.php
+config/local.neon
