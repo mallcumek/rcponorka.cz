@@ -38,6 +38,18 @@ class Bootstrap
 	}
 
 
+	/**
+	 * Creates a static boot method for MCP Inspector compatibility.
+	 */
+	public static function boot(): Configurator
+	{
+		$bootstrap = new self();
+		$bootstrap->initializeEnvironment();
+		$bootstrap->setupContainer();
+		return $bootstrap->configurator;
+	}
+
+
 	public function initializeEnvironment(): void
 	{
 		// Nette is smart, and the development mode turns on automatically,
