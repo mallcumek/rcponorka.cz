@@ -26,7 +26,8 @@
 		"latte/latte": "^3.0",
 		"tracy/tracy": "^2.10",
 		"contributte/image-storage": "^3.0",
-		"nette/mail": "^4.0"
+		"nette/mail": "^4.0",
+		"nette/mcp-inspector": "dev-master"
 	},
 	"require-dev": {
 		"nette/tester": "^2.5"
@@ -36,5 +37,10 @@
 			"App\\": "app"
 		}
 	},
-	"minimum-stability": "stable"
+	"minimum-stability": "stable",
+	"config": {
+		"allow-plugins": {
+			"php-http/discovery": true
+		}
+	}
 }
