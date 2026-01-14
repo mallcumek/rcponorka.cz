@@ -17,7 +17,19 @@
                 <div class="section-header">
                     <h2>Program</h2>
                     <p class="text-dark">Kalendář akcí v rockovém klubu Ponorka, Pardubice.</p>
-                    {if $user->isLoggedIn()}
+                    <div class="container text-center">
+                        <div class="row">
+                            <div class="col">
+
+                          <a href="{$basePath}/assets/img/ponorka-prosinec-2025.jpg">
+                                <img src="{$basePath}/assets/img/ponorka-prosinec-2025.jpg" class="img-fluid justify-content-center align-self-center text-center"  style="max-height: 70vh;" >
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                     {if $user->isLoggedIn()}
                         <h3><a class="link-danger fw-bold" n:href="Edit:create">Vytvořit novou událost</a></h3>
                     {/if}
                 </div>
@@ -213,7 +225,7 @@
                                 <div class="form-group mt-3">
                                     <textarea n:name="message" class="form-control" rows="5" placeholder="Zpráva" required></textarea>
                                 </div>
-                                <div class="text-center">
+                                <div class="text-center mt-3">
                                     <button type="submit" n:name="send" class="text-dark">Odeslat zprávu</button>
                                 </div>
                             {/form}

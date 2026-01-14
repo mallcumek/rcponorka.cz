@@ -1,9 +1,9 @@
-vendor
 composer.lock
 config
 temp
-.idea
 log
+.idea
+.vscode
 /www/asssets/vendor/
 /www/assets/img/
 /www/data/
