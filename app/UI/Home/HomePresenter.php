@@ -43,11 +43,15 @@ final class HomePresenter extends Nette\Application\UI\Presenter
         // Načtení otevírací doby z databáze
         $openingHours = $this->facade->getOpeningHours();
 
+        // Načtení cesty k měsíčnímu programu z databáze
+        $programImagePath = $this->facade->getProgramImagePath();
+
         // Předání dat do šablony
         $this->template->posts = $posts;
         $this->template->formattedDates = $formattedDates;
         // Operátor ?? (null coalescing) - pokud je $openingHours NULL (není v DB), použije se výchozí text
         $this->template->openingHours = $openingHours ?? 'Ponorka otevřená od 16:00 do 22:00.';
+        $this->template->programImagePath = $programImagePath;
     }
 
     // Archiv proběhlých akcí se stránkováním

@@ -48,6 +48,13 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
     {
     }
 
+    // Render metoda pro akci default - načte cestu k měsíčnímu programu
+    public function renderDefault(): void
+    {
+        $programImagePath = $this->facade->getProgramImagePath();
+        $this->template->programImagePath = $programImagePath;
+    }
+
     // Továrna na formulář pro fotku galerie
     protected function createComponentGalleryForm(): Form
     {
@@ -65,7 +72,7 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
         return $form;
     }
 
-    // Validace formuláře - kontrola aby soubor byl obrázek a zároveň větší nebo rovno 1000px *chatGPT
+    // Validace formuláře - kontrola aby soubor byl obrázek a zároveň větší nebo rovno 700px
     // Metoda musí být public, jinak nefunguje po odeslání formuláře.
     public function validateImage(Nette\Forms\Controls\UploadControl $control): bool
     {
@@ -84,17 +91,34 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
 
         // Kontrola minimální šířky
         if ($imageSize[0] < 700) {
-            // Nastavení dynamické chybové zprávy
-            // * $control je objekt třídy Nette\Forms\Controls\UploadControl.
-            // Tento objekt představuje formulářové pole pro nahrávání souboru. Je součástí Nette formulářů.
-            // $control je předán do metody validateImage jako argument.
-            // * addError je metoda třídy BaseControl, kterou UploadControl dědí.
-            // Metoda přidá chybovou zprávu přímo k danému formulářovému prvku.
-            // Tato chyba se pak zobrazí uživateli pod polem ve formuláři.
-            // * sprintf() je nativní PHP funkce, která vrací řetězec formátovaný podle zadané šablony.
-            // Šablona 'Nahraný obrázek je příliš malý, má šířku %d pixelů.' obsahuje místo %d, které je nahrazeno hodnotou $imageSize[0].
             $control->addError(sprintf(
-                'Nahraný obrázek je příliš malý, má šířku %d pixelů.',
+                'Nahraný obrázek je příliš malý, má šířku %d pixelů. ',
+                $imageSize[0]
+            ));
+            return false;
+        }
+
+        return true;
+    }
+
+    // Validace formuláře pro měsíční program - kontrola minimální šířky 1000px
+    public function validateProgramImage(Nette\Forms\Controls\UploadControl $control): bool
+    {
+        $file = $control->getValue();
+
+        if (!$file instanceof Nette\Http\FileUpload || !$file->isOk() || !$file->isImage()) {
+            return false;
+        }
+
+        $imageSize = @getimagesize($file->getTemporaryFile());
+        if ($imageSize === false) {
+            return false;
+        }
+
+        // Kontrola minimální šířky 1000px
+        if ($imageSize[0] < 1000) {
+            $control->addError(sprintf(
+                'Nahraný obrázek je příliš malý, má šířku %d pixelů. ',
                 $imageSize[0]
             ));
             return false;
@@ -342,7 +366,88 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
 
         // Flash zpráva o úspěchu
         $this->flashMessage('Otevírací doba byla aktualizována.', 'success');
-        $this->redirect('this');
+        // Přesměrování s anchorem na nadpis
+        $this->redirect('this#opening-hours');
+    }
+
+    // Metoda pro uložení obrázku měsíčního programu
+    private function storeProgramImage(Nette\Http\FileUpload $file): string
+    {
+        // Složka pro měsíční program
+        $uploadDir = __DIR__ . '/../../../www/program';
+
+        // Vytvoření složky, pokud neexistuje
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        } else {
+            // Smazání všech souborů ve složce (vždy jen jeden soubor)
+            $this->clearDir($uploadDir);
+        }
+
+        // Fixní název souboru
+        $fileName = 'rc-ponorka-pardubice-aktualni-program.webp';
+
+        // Přečtení obsahu souboru
+        $fileContent = $file->getContents();
+        $image = Image::fromString($fileContent);
+
+        // Resize na max. Full HD (1920px), pokud je větší
+        if ($image->getWidth() > 1920) {
+            $image->resize(1920, null);
+        }
+
+        // Zaostření a uložení jako WebP
+        $image->sharpen();
+        $image->save($uploadDir . '/' . $fileName, 80, Image::WEBP);
+
+        // Vrátí cestu k obrázku pro uložení do databáze
+        return '/program/' . $fileName;
+    }
+
+    // Továrna na formulář pro měsíční program
+    protected function createComponentProgramForm(): Form
+    {
+        $form = new Form;
+        $form->addUpload('image', '(šířka min. 1000px):')
+            ->setHtmlAttribute('class', 'form-control')
+            ->setRequired('Vyberte obrázek programu.')
+            ->addRule([$this, 'validateProgramImage'], 'Soubor musí být obrázek a musí mít šířku alespoň 1000 pixelů.');
+        $form->addSubmit('send', 'Uložit program')
+            ->setHtmlAttribute('class', 'btn btn-primary');
+        $form->onSuccess[] = $this->programFormSucceeded(...);
+
+        return $form;
+    }
+
+    private function programFormSucceeded(Form $form, array $data): void
+    {
+        // V databázi existuje jen jeden řádek s ID 1
+        $id = 1;
+
+        // Načtení řádku z databáze
+        $program = $this->database->table('program')->get($id);
+
+        if (!$program) {
+            $this->error('Řádek v tabulce program neexistuje!');
+        }
+
+        // Získání nahrávaného souboru
+        /** @var FileUpload $uploadedFile */
+        $uploadedFile = $form['image']->getValue();
+
+        if ($uploadedFile->isOk()) {
+            // Volání metody pro uložení souboru
+            $imagePath = $this->storeProgramImage($uploadedFile);
+
+            // Aktualizace cesty k obrázku v databázi
+            $program->update(['image_path' => $imagePath]);
+
+            // Flash zpráva o úspěchu
+            $this->flashMessage('Měsíční program byl úspěšně aktualizován.', 'success');
+        }
+
+        // Přesměrování s anchorem na nadpis
+        $this->redirect('this#monthly-program');
     }
 
 

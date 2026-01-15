@@ -34,8 +34,17 @@
                                 galerii</a></h3>
 
                         </p>
-                        <h2 class="text-start pt-5">Nastavení otevírací doby</h2>
+                        <h2 class="text-start pt-5" id="opening-hours">Nastavení otevírací doby</h2>
                         {control openingForm}
+
+                        <h2 class="text-start pt-5" id="monthly-program">Program na měsíc</h2>
+
+                        {if $programImagePath}
+                            <img src="{$programImagePath}" alt="RC Ponorka Pardubice aktuální program" class="img-fluid border border-dark mb-3" style="max-width: 200px;">
+                        {else}
+                            <p class="text-muted">Žádný program zatím nebyl nahrán.</p>
+                        {/if}
+                        {control programForm}
 
                     </div>
                 </div>

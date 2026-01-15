@@ -85,5 +85,12 @@ final class PostFacade
         return $row ? $row->content : null;
     }
 
+    // Metoda pro získání cesty k měsíčnímu programu z databáze
+    public function getProgramImagePath(): ?string
+    {
+        $row = $this->database->table('program')->fetch();
+        return $row ? $row->image_path : null;
+    }
+
 
 }

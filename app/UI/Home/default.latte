@@ -17,13 +17,17 @@
                 <div class="section-header">
                     <h2>Program</h2>
                     <p class="text-dark pb-2">Kalendář akcí v rockovém klubu Ponorka, Pardubice.</p>
+                    {if $user->isLoggedIn()}
+                        <p class="text-dark">- <a class="link-danger" n:href="Dashboard:default#monthly-program">upravit program na celý měsíc</a></p>
+                    {/if}
                     <div class="container text-center">
                         <div class="row">
                             <div class="col">
-
-                          <a href="{$basePath}/assets/img/ponorka-prosinec-2025.jpg">
-                                <img src="{$basePath}/assets/img/ponorka-prosinec-2025.jpg" class="img-fluid justify-content-center align-self-center text-center"  style="max-height: 70vh;" >
-                                </a>
+                                {if $programImagePath}
+                                    <a href="{$programImagePath}">
+                                        <img src="{$programImagePath}" alt="RC Ponorka Pardubice aktuální program" class="img-fluid justify-content-center align-self-center text-center" style="max-height: 70vh;">
+                                    </a>
+                                {/if}
                             </div>
                         </div>
                     </div>
