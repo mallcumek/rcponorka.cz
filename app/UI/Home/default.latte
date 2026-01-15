@@ -55,7 +55,7 @@
                             </div>
                             <div class="col-md-10">
                                 <div class="speaker bg-transparent">
-                                    <a href="{link Post:show $post->id}#schedule">
+                                    <a href="{link Post:show $post->id, $post->title_slug}#schedule">
                                         <!-- Přepsání koncovky názvu obrázku z databáze, pro zobrazení malého resize náhledu -->
                                         <img loading="lazy"
                                              src="{if $post->image_path}{$post->image_path|replace:'.webp','-400w.webp'}{else}https://placehold.co/300x300?text=You can change the image{/if}"
@@ -66,7 +66,7 @@
                                     </a>
                                 </div>
                                 <div class="text ">
-                                    <h3 class="fs-4"><a href="{link Post:show $post->id}#schedule">{$post->title}</a>
+                                    <h3 class="fs-4"><a href="{link Post:show $post->id, $post->title_slug}#schedule">{$post->title}</a>
                                     </h3>
                                     <p>Začátek: <strong>{$post->starttime}</strong> <br>
 

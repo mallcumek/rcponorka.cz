@@ -216,7 +216,7 @@ final class EditPresenter extends Nette\Application\UI\Presenter
         }
 
         $this->flashMessage('Příspěvek byl úspěšně publikován.', 'success');
-        $this->redirect('Post:show', $post->id);
+        $this->redirect('Post:show', ['id' => $post->id, 'slug' => $post->title_slug]);
     }
 
     private function clearDir(string $dir): void

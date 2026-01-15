@@ -20,6 +20,21 @@ final class RouterFactory
 		$router = new RouteList;
         // Přidáme pravidlo pro /nastaveni → Sign:in
         $router->addRoute('nastaveni', 'Sign:in');
+
+		// Redirect ze staré URL na novou SEO-friendly URL
+		// Stará URL: /post/show?id=123 → Nová URL: /123-nazev-postu
+		$router->addRoute('post/show', [
+			'presenter' => 'Post',
+			'action' => 'oldUrl',
+		]);
+
+		// Nová SEO-friendly routa pro posty - MUSÍ BÝT PŘED obecnou routou!
+		// Formát: /123-nazev-postu → Post:show
+		$router->addRoute('<id [0-9]+>-<slug>', [
+			'presenter' => 'Post',
+			'action' => 'show',
+		]);
+
 		// Default route that maps to the Dashboard
 		$router->addRoute('<presenter>/<action>', 'Home:default');
 

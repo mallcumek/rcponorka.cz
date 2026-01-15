@@ -23,8 +23,29 @@ final class PostPresenter extends Nette\Application\UI\Presenter
         }
 
     }
-    // Metoda renderShow vyžaduje jeden argument – ID jednoho konkrétního článku, který má být zobrazen. Poté tento článek načte z databáze a předá ho do šablony.
-    public function renderShow(int $id): void
+
+    /**
+     * Přesměrování starých URL na nové SEO-friendly URL
+     * Stará URL: /post/show?id=123 → Nová URL: /123-nazev-postu
+     */
+    public function actionOldUrl(int $id): void
+    {
+        $post = $this->database->table('posts')->get($id);
+        if (!$post) {
+            $this->error('Stránka nebyla nalezena');
+        }
+
+        // 301 Permanent Redirect na novou URL
+        $this->redirectPermanent('Post:show', [
+            'id' => $post->id,
+            'slug' => $post->title_slug
+        ]);
+    }
+
+    // Metoda renderShow nyní přijímá i slug pro SEO-friendly URL
+    // Formát URL: /123-nazev-postu
+    // Post se načítá pouze podle ID, slug slouží jen pro SEO v URL
+    public function renderShow(int $id, string $slug): void
     {
         $post = $this->database
             ->table('posts')
@@ -32,6 +53,16 @@ final class PostPresenter extends Nette\Application\UI\Presenter
         if (!$post) {
             $this->error('Stránka nebyla nalezena');
         }
+
+        // Validace slugu - pokud slug neodpovídá skutečnému slugu v DB,
+        // přesměrujeme na správnou URL (canonical redirect pro SEO)
+        if ($slug !== $post->title_slug) {
+            $this->redirectPermanent('Post:show', [
+                'id' => $post->id,
+                'slug' => $post->title_slug
+            ]);
+        }
+
         $this->template->post = $post;
 
         // Použití formátování datumu z fasády
