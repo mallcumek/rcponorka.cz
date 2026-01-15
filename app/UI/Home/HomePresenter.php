@@ -45,6 +45,33 @@ final class HomePresenter extends Nette\Application\UI\Presenter
         $this->template->formattedDates = $formattedDates;
     }
 
+    // Archiv proběhlých akcí se stránkováním
+    public function renderArchiv(int $page = 1): void
+    {
+        $itemsPerPage = 20;
+
+        // Vytvoření paginátoru
+        $paginator = new Nette\Utils\Paginator;
+        $paginator->setItemCount($this->facade->getPastArticles()->count('*'));
+        $paginator->setItemsPerPage($itemsPerPage);
+        $paginator->setPage($page);
+
+        // Získání proběhlých akcí pro aktuální stránku
+        $posts = $this->facade->getPastArticles()
+            ->limit($paginator->getLength(), $paginator->getOffset());
+
+        // Vytvoření pole formátovaných dat
+        $formattedDates = [];
+        foreach ($posts as $post) {
+            $formattedDates[$post->id] = $this->facade->formatDate($post->eventdate);
+        }
+
+        // Předání dat do šablony
+        $this->template->posts = $posts;
+        $this->template->formattedDates = $formattedDates;
+        $this->template->paginator = $paginator;
+    }
+
     // Metoda pro vytvoření formuláře
     protected function createComponentContactForm(): Form
     {

@@ -22,6 +22,15 @@ final class PostFacade
             ->order('eventdate');
     }
 
+    // Metoda pro získání proběhlých akcí (archiv)
+    public function getPastArticles()
+    {
+        return $this->database
+            ->table('posts')
+            ->where('eventdate < ?', (new \DateTime())->format('Y-m-d 00:00:00'))
+            ->order('eventdate DESC'); // Od nejnovějšího propadnutého
+    }
+
     public function getGalleryImages()
     {
         return $this->database

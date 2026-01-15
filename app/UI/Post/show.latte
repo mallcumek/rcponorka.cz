@@ -24,10 +24,15 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-6 bg-light text-dark">
                         <div class="date text-center pt-2 ">{$formattedDate}</div>
-                        <h1 class="p-0 m-0  text-center text-uppercase fw-bold " n:block="title">{$post->title}</h1>
+                        <h1 class="p-0 m-0  text-center text-uppercase fw-bold " n:block="title">
+                            {if $isPastEvent}<span class="text-danger">[PROBĚHLO]</span> {/if}{$post->title}
+                        </h1>
+                        {if $isPastEvent}
+                            <p class="text-center text-danger fw-bold pt-2">TATO AKCE UŽ PROBĚHLA</p>
+                        {/if}
                         <div class="p-3 m-0 text-center ">
                             <p class="text-dark">Začátek: <strong>{$post->starttime}</strong><br>
-                               
+
 
                                 {if $post->endtime}
                                     Konec:   <strong>{$post->endtime}</strong><br>
@@ -38,7 +43,8 @@
                                 {if $post->presaleprice}
                                     Předprodej: <strong>{$post->presaleprice}</strong> Kč<br>
                                 {/if}
-                                {if $post->tickets}
+                                {* Tlačítko vstupenek se nezobrazuje u proběhlých akcí *}
+                                {if !$isPastEvent && $post->tickets}
                                     <a href="{$post->tickets}">
                                         <button type="button" class="btn btn-sm btn-warning">Vstupenky</button>
                                     </a>

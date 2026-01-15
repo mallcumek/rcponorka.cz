@@ -1,0 +1,289 @@
+{block title}Archiv koncertů{/block}
+
+{block content}
+    <!-- ======= Hero Section ======= -->
+    <section id="hero">
+        <div class="hero-container">
+            <div n:foreach="$flashes as $flash" n:class="alert, 'alert-' . $flash->type">{$flash->message}</div>
+            <h1 class="mb-4 pb-0">Archiv<br><span>koncertů</span></h1>
+            <a href="{$basePath}/#schedule" class="about-btn scrollto">Program</a>
+            <a href="{$basePath}/#contact" class="about-btn scrollto">Kontakt</a>
+            <p class="text-danger pt-2 fw-bold">TYTO AKCE UŽ PROBĚHLY</p>
+        </div>
+    </section><!-- End Hero Section -->
+
+    <main id="main">
+        <!-- ======= Schedule Section ======= -->
+        <section id="schedule" class="section-with-bg">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Proběhlé akce</h2>
+                    <p class="text-dark pb-2">Archiv proběhlých akcí v rockovém klubu Ponorka, Pardubice.</p>
+
+                     {if $user->isLoggedIn()}
+                        <h3><a class="link-danger fw-bold" n:href="Edit:create">Vytvořit novou událost</a></h3>
+                    {/if}
+                </div>
+
+                <div class="tab-content row justify-content-center">
+                    <div class="col-lg-9 tab-pane fade show active">
+
+                        {* Atribut n:foreach obaluje div blokem foreach
+                           Začátek cyklu na výpis události *}
+                        <div n:foreach="$posts as $post" class="row schedule-item">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <!-- Použití formátovaného data z pole -->
+                                <time>{$formattedDates[$post->id]}</time>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="speaker bg-transparent">
+                                    <a href="{link Post:show $post->id, $post->title_slug}#schedule">
+                                        <!-- Přepsání koncovky názvu obrázku z databáze, pro zobrazení malého resize náhledu -->
+                                        <img loading="lazy"
+                                             src="{if $post->image_path}{$post->image_path|replace:'.webp','-400w.webp'}{else}https://placehold.co/300x300?text=You can change the image{/if}"
+                                             alt="{$post->title}"
+                                             class="pt-1"
+                                             width="100"
+                                        height="100">
+                                    </a>
+                                </div>
+                                <div class="text ">
+                                    <h3 class="fs-4">
+                                        <a href="{link Post:show $post->id, $post->title_slug}#schedule">
+                                            <span class="text-danger fw-bold fs-6">[PROBĚHLO]</span> {$post->title}
+                                        </a>
+                                    </h3>
+                                    <p>Začátek: <strong>{$post->starttime}</strong> <br>
+
+                                        {if $post->endtime}
+                                            Konec:
+                                            <strong>{$post->endtime}</strong>
+                                        {/if}
+
+                                    </p>
+
+                                    {if $post->onsiteprice}
+                                        <p>Na místě: <strong>{$post->onsiteprice} Kč</strong>
+                                        </p>
+                                    {/if}
+                                    {if $post->presaleprice}
+                                        <p>Předprodej: <strong>{$post->presaleprice} Kč</strong>
+                                        </p>
+                                    {/if}
+                                    {* Tlačítko vstupenek se nezobrazuje u proběhlých akcí *}
+                                </div>
+                                <p class="text-dark-udalost pt-1">{$post->content|truncate:256}</p>
+                            </div>
+                            <p>{if $user->isLoggedIn()}
+                                    - <a n:href="Edit:edit $post->id" class="link-danger">upravit</a>
+                                {/if}</p>
+                        </div>
+
+                    </div> <!-- End Schdule Day 1 col -->
+
+                </div> <!-- End tab-content row-->
+
+                {* Stránkování *}
+                {if $paginator->getPageCount() > 1}
+                    <div class="text-center pt-4">
+                        <nav aria-label="Stránkování">
+                            <ul class="pagination justify-content-center">
+                                {* Předchozí stránka *}
+                                {if !$paginator->isFirst()}
+                                    <li class="page-item">
+                                        <a class="page-link" n:href="archiv, page => $paginator->getPage() - 1">
+                                            &laquo; Předchozí
+                                        </a>
+                                    </li>
+                                {/if}
+
+                                {* Čísla stránek *}
+                                {for $i = 1; $i <= $paginator->getPageCount(); $i++}
+                                    {if $i == $paginator->getPage()}
+                                        <li class="page-item active">
+                                            <span class="page-link">{$i}</span>
+                                        </li>
+                                    {else}
+                                        <li class="page-item">
+                                            <a class="page-link" n:href="archiv, page => $i">{$i}</a>
+                                        </li>
+                                    {/if}
+                                {/for}
+
+                                {* Následující stránka *}
+                                {if !$paginator->isLast()}
+                                    <li class="page-item">
+                                        <a class="page-link" n:href="archiv, page => $paginator->getPage() + 1">
+                                            Další &raquo;
+                                        </a>
+                                    </li>
+                                {/if}
+                            </ul>
+                        </nav>
+                    </div>
+                {/if}
+
+            </div>
+
+        </section><!-- End Schedule Section -->
+
+
+        <!-- ======= Contact Section ======= -->
+        <section id="contact" class="section-bg">
+
+            <div class="container">
+
+                <div class="section-header">
+                    <h2>Kontakt</h2>
+                    <p class="text-dark">Máte-li dotaz, pište, volejte, těšíme se na vás.
+                    </p>
+                </div>
+                <p class="text-center"><span class="text-uppercase">Ponorka otevřená od 16:00 do 22:00.</span></p>
+                <div class="row contact-info">
+
+                    <div class="col-md-4 col-6">
+                        <div class="contact-address">
+                            <i class="bi bi-geo-alt"></i>
+                            <h3>Club Ponorka</h3>
+                            <address class="text-dark">Jiráskova 29, 530 02 Pardubice I</address>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-6">
+                        <div class="contact-phone">
+                            <a href="tel:+420603260359" class="text-dark" aria-label="Ponorka Telefon"><i class="bi bi-phone"></i></a>
+                            <a href="tel:+420603260359" class="text-dark"><h3>Telefon</h3></a>
+                            <p><a href="tel:+420603260359" class="text-dark">+420 603 260 359</a></p>
+                            <p><a href="tel:+420776627092" class="text-dark">+420 776 627 092</a></p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-6">
+                        <div class="contact-email">
+                            <a href="mailto:falcon.prod@seznam.cz" aria-label="Ponorka Email"><i class="bi bi-envelope"></i></a>
+                            <a href="mailto:falcon.prod@seznam.cz"><h3>Email</h3></a>
+                            <p><a href="mailto:falcon.prod@seznam.cz">falcon.prod@seznam.cz</a></p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-6">
+                        <div class="contact-email">
+                            <a href="https://www.facebook.com/p/RC-Ponorka-100059010897346/" aria-label="Ponorka Facebook"> <i
+                                        class="bi bi-facebook"></i></a>
+                            <a href="https://www.facebook.com/p/RC-Ponorka-100059010897346/"><h3>Facebook</h3></a>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-6">
+                        <div class="contact-email">
+                            <a href="https://www.instagram.com/explore/locations/894605490/rc-ponorka/" aria-label="Ponorka Instagram"> <i
+                                        class="bi bi-instagram"></i></a>
+                            <a href="https://www.instagram.com/explore/locations/894605490/rc-ponorka/"><h3>
+                                    Instagram</h3></a>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row gy-4 mt-1">
+                    <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+                        <div id="map-container" title="Mapa Google"
+                             style="width: 100%; height: 400px; background-color: #ddd; display: flex; align-items: center; justify-content: center;">
+                            <p>Načítání mapy...</p>
+                        </div>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                let mapContainer = document.getElementById("map-container");
+                                let mapLoaded = false;
+
+                                function loadGoogleMap() {
+                                    if (!mapLoaded) {
+                                        mapLoaded = true;
+                                        let iframe = document.createElement("iframe");
+                                        iframe.src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2562.690654911395!2d15.7820078!3d50.0358921!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470dcc8d5f622377%3A0xb527a79d428fe4d6!2sClub%20Ponorka!5e0!3m2!1scs!2scz!4v1739105875283!5m2!1scs!2scz";
+                                        iframe.width = "100%";
+                                        iframe.height = "400";
+                                        iframe.style.border = "0";
+                                        iframe.loading = "lazy";
+                                        mapContainer.innerHTML = "";
+                                        mapContainer.appendChild(iframe);
+                                    }
+                                }
+
+                                function checkViewport() {
+                                    let rect = mapContainer.getBoundingClientRect();
+                                    if (rect.top < window.innerHeight && rect.bottom >= 0) {
+                                        loadGoogleMap();
+                                        window.removeEventListener("scroll", checkViewport);
+                                    }
+                                }
+
+                                window.addEventListener("scroll", checkViewport);
+                                checkViewport();
+                            });
+                        </script>
+
+                    </div><!-- End Google Maps -->
+                    <div class="col-lg-6">
+                        <h3 id="contact-form">Napište nám zprávu</h3>
+                        <div class="form">
+                            <div class="my-3">
+                                {foreach $flashes as $flash}
+                                    <div n:foreach="$flashes as $flash" n:class="alert, 'alert-' . $flash->type">{$flash->message}</div>
+                                {/foreach}
+                            </div>
+                            {form contactForm, class => "php-email-form"} <!-- Začátek formuláře; aplikujeme stávající CSS třídu -->
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <input n:name="name" type="text" class="form-control" placeholder="Jméno" required>
+                                    </div>
+                                    <div class="form-group col-md-6 mt-3 mt-md-0">
+                                        <input n:name="email" type="email" class="form-control" placeholder="Email" required>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <input n:name="subject" type="text" class="form-control" placeholder="Předmět" required>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <textarea n:name="message" class="form-control" rows="5" placeholder="Zpráva" required></textarea>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <button type="submit" n:name="send" class="text-dark">Odeslat zprávu</button>
+                                </div>
+            {/form}
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <h3 class="pt-4">Naši partneři</h3>
+                    <div class="d-flex flex-wrap gap-2   justify-content-center partneri align-items-center">
+                        <div><a href="https://ctftmma.cz" title="CTFT MMA Pardubice"> <img loading="lazy" alt="MMA team Pardubice"
+                                  src="https://ctftmma.cz/images/mma-logo-black-transparent-400w.webp"
+                                  width="100"
+                                  height="100" class="rounded-circle mx-auto" alt="CTFT MMA klub Pardubice"></a></div>
+                        <div class="item"><a href="https://www.hayashi.cz/" rel="nofollow"> <img loading="lazy" src="https://ctftmma.cz/images/hayashi.webp"
+                                               class="mx-auto" width="100" height="100" alt="hayashi"></a></div>
+                        <div class="item"><a href="https://www.foxylife.cz/" rel="nofollow"><img loading="lazy" src="https://ctftmma.cz/images/foxylife.webp"
+                                               class="mx-auto" width="100" height="100" alt="foxylife" ></a></div>
+                        <div class="item"><a href="https://www.trofeje.cz/" rel="nofollow"><img loading="lazy" src="https://ctftmma.cz/images/p_trofeje.cz400w.webp"
+                                               class="mx-auto " width="100" height="100" alt="partner2"></a></div>
+                        <div class="item"><a href="https://www.budostore.cz/" rel="nofollow"><img loading="lazy" src="https://ctftmma.cz/images/p_budostore.png"
+                                               class="mx-auto " width="100" height="100" alt="partner3"></a></div>
+                        <div class="item"><a href="https://www.carnelabs.eu/" rel="nofollow"><img loading="lazy" src="https://ctftmma.cz/images/p_carnelabs.webp"
+                                               class="mx-auto " width="100" height="100" alt="partner4"></a></div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </section><!-- End Contact Section -->
+
+    </main><!-- End #main -->
+
+
+{/block}

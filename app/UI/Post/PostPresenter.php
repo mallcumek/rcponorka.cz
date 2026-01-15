@@ -72,6 +72,11 @@ final class PostPresenter extends Nette\Application\UI\Presenter
         // Verze formátování datumu do formátu "31.2.2025" pro meta title
         $formattedDateShort = $this->facade->formatDateShort($post->eventdate);
         $this->template->formattedDateShort = $formattedDateShort;
+
+        // Zjistíme, zda je akce proběhlá (pro zobrazení archivu bez tlačítka vstupenek)
+        $eventDate = new \DateTime($post->eventdate);
+        $today = new \DateTime('today');
+        $this->template->isPastEvent = $eventDate < $today;
     }
 
 

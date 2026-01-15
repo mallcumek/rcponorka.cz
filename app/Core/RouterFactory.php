@@ -35,6 +35,14 @@ final class RouterFactory
 			'action' => 'show',
 		]);
 
+		// Routa pro archiv koncertů
+		// Formát: /archiv-koncertu nebo /archiv-koncertu/2 (stránka 2)
+		$router->addRoute('archiv-koncertu[/<page [0-9]+>]', [
+			'presenter' => 'Home',
+			'action' => 'archiv',
+			'page' => 1,
+		]);
+
 		// Default route that maps to the Dashboard
 		$router->addRoute('<presenter>/<action>', 'Home:default');
 
