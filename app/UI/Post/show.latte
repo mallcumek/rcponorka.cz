@@ -38,8 +38,8 @@
                                 {if $post->presaleprice}
                                     Předprodej: <strong>{$post->presaleprice}</strong> Kč<br>
                                 {/if}
-                                {if $post->presaleprice}
-                                    <a href="#">
+                                {if $post->tickets}
+                                    <a href="{$post->tickets}">
                                         <button type="button" class="btn btn-sm btn-warning">Vstupenky</button>
                                     </a>
                                 {/if}
