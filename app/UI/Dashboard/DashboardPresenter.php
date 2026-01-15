@@ -154,6 +154,9 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
             //Titulek projede funkci webalize na seo titulek - vynecha znaky, diakritiku, male pismo, mezery na pomlcky. blabla
             $title_slug = Strings::webalize($data['title']);
             $data['title_slug'] = $title_slug;
+            // Přidáme dočasnou hodnotu pro image_path - bude aktualizováno po nahrání souboru
+            // Fixuje na localu error  "Field 'image_path' doesn't have a default value" 
+            $data['image_path'] = '';
 
             $post = $this->database
                 ->table('gallery')

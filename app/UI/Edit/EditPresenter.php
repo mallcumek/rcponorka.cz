@@ -179,6 +179,10 @@ final class EditPresenter extends Nette\Application\UI\Presenter
             if (!$data['onsiteprice']) {
                 $data['onsiteprice'] = 0;
             }
+            // Přidáme dočasnou hodnotu pro image_path - bude aktualizováno po nahrání souboru
+            // Fixuje na localu error  "Field 'image_path' doesn't have a default value" 
+            $data['image_path'] = '';
+
             $post = $this->database
                 ->table('posts')
                 ->insert($data);
