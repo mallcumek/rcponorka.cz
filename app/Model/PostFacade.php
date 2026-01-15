@@ -78,5 +78,12 @@ final class PostFacade
         $this->database->table('gallery')->where('id', $id)->delete();
     }
 
+    // Metoda pro získání otevírací doby z databáze
+    public function getOpeningHours(): ?string
+    {
+        $row = $this->database->table('openinghours')->fetch();
+        return $row ? $row->content : null;
+    }
+
 
 }
