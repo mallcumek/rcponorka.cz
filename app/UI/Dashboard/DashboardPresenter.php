@@ -371,7 +371,7 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
     }
 
     // Metoda pro uložení obrázku měsíčního programu
-    private function storeProgramImage(Nette\Http\FileUpload $file): string
+    private function storeProgramImage(Nette\Http\FileUpload $file, int $id): string
     {
         // Složka pro měsíční program
         $uploadDir = __DIR__ . '/../../../www/program';
@@ -379,13 +379,10 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
         // Vytvoření složky, pokud neexistuje
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
-        } else {
-            // Smazání všech souborů ve složce (vždy jen jeden soubor)
-            $this->clearDir($uploadDir);
         }
 
-        // Fixní název souboru
-        $fileName = 'rc-ponorka-pardubice-aktualni-program.webp';
+        // Název souboru s ID pro cache-busting
+        $fileName = $id . '-rc-ponorka-pardubice-aktualni-program.webp';
 
         // Přečtení obsahu souboru
         $fileContent = $file->getContents();
@@ -421,26 +418,37 @@ final class DashboardPresenter extends Nette\Application\UI\Presenter
 
     private function programFormSucceeded(Form $form, array $data): void
     {
-        // V databázi existuje jen jeden řádek s ID 1
-        $id = 1;
-
-        // Načtení řádku z databáze
-        $program = $this->database->table('program')->get($id);
-
-        if (!$program) {
-            $this->error('Řádek v tabulce program neexistuje!');
-        }
-
         // Získání nahrávaného souboru
         /** @var FileUpload $uploadedFile */
         $uploadedFile = $form['image']->getValue();
 
         if ($uploadedFile->isOk()) {
-            // Volání metody pro uložení souboru
-            $imagePath = $this->storeProgramImage($uploadedFile);
+            // Načtení starého záznamu (pokud existuje)
+            $oldProgram = $this->database->table('program')->fetch();
+
+            // Vytvoření nového záznamu - autoincrement vygeneruje nové ID
+            $newProgram = $this->database->table('program')->insert([
+                'image_path' => '' // Dočasná hodnota, bude aktualizována
+            ]);
+
+            // Získání nového ID a uložení souboru s tímto ID v názvu
+            $imagePath = $this->storeProgramImage($uploadedFile, $newProgram->id);
 
             // Aktualizace cesty k obrázku v databázi
-            $program->update(['image_path' => $imagePath]);
+            $newProgram->update(['image_path' => $imagePath]);
+
+            // Smazání starého záznamu a souboru (pokud existoval)
+            if ($oldProgram) {
+                // Smazání starého souboru z disku
+                if ($oldProgram->image_path) {
+                    $oldFilePath = __DIR__ . '/../../../www' . $oldProgram->image_path;
+                    if (file_exists($oldFilePath)) {
+                        @unlink($oldFilePath);
+                    }
+                }
+                // Smazání starého záznamu z databáze
+                $oldProgram->delete();
+            }
 
             // Flash zpráva o úspěchu
             $this->flashMessage('Měsíční program byl úspěšně aktualizován.', 'success');
