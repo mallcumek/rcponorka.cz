@@ -1,5 +1,5 @@
 Aktualizovaný Nette projekt na PHP 8.3, přidán MCP Inspector s Claude Code a opraveny klíčové funkce.
-V další aktualizaci zkusíme nastavit (Event) structured data.
+V další aktualizaci se zavede mazání souborů z FTP a zkusíme nastavit (Event) structured data.
 
 
 
@@ -50,4 +50,5 @@ php -S localhost:8000 www/index.php
 Then visit `http://localhost:8000` in your browser to see the welcome page.
 
 It requires PHP version 8.1 or newer.
+
 
